@@ -1,0 +1,52 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: supervisord-test
+spec:
+  containers:
+  - args:
+    - '-c'
+    - /var/lib/supervisord/conf/supervisor.conf
+    command:
+    - /var/lib/supervisord/bin/supervisord
+    env:
+    - name: JAVA_APP_DIR
+      value: /deployment
+    - name: JAVA_DEBUG
+      value: 'false'
+    - name: JAVA_DEBUG_PORT
+      value: '5005'
+    - name: JAVA_APP_JAR
+      value: app.jar
+    - name: NPM_RUN
+      value: start
+    image: nodeshift/centos7-s2i-nodejs:10.x
+    imagePullPolicy: Always
+    name: fruit-client
+    ports:
+    - containerPort: 8080
+      protocol: TCP
+    volumeMounts:
+    - mountPath: /var/lib/supervisord
+      name: shared-data
+    - mountPath: /tmp/artifacts
+      name: m2-data
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: default-token-z6ppn
+      readOnly: true
+  initContainers:
+  - env:
+    - name: CMDS
+      value: "run-java:/usr/local/s2i/run;run-node:/usr/libexec/s2i/run;compile-java:/usr/local/s2i/assemble"
+    image: quay.io/snowdrop/supervisord:latest
+    imagePullPolicy: Always
+    name: copy-supervisord
+    volumeMounts:
+    - mountPath: /var/lib/supervisord
+      name: shared-data
+  volumes:
+  - emptyDir: {}
+    name: shared-data
+  - name: m2-data
+    persistentVolumeClaim:
+      claimName: m2-data
