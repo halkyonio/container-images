@@ -23,8 +23,12 @@ function install {
 }
 
 echo -e "${BLUE}Installing Spring Boot ${SPRING_BOOT_VERSION} dependencies..."
+install $SPRING_BOOT_GROUP:spring-boot-dependencies:$SPRING_BOOT_VERSION:pom
 install $SPRING_BOOT_GROUP:spring-boot-starter-parent:$SPRING_BOOT_VERSION:pom
 install $SPRING_BOOT_GROUP:spring-boot-starter-web:$SPRING_BOOT_VERSION
+install $SPRING_BOOT_GROUP:spring-boot-starter-logging:$SPRING_BOOT_VERSION
+install $SPRING_BOOT_GROUP:spring-boot-starter-tomcat:$SPRING_BOOT_VERSION
+install $SPRING_BOOT_GROUP:spring-boot-starter-json:$SPRING_BOOT_VERSION
 install $SPRING_BOOT_GROUP:spring-boot-starter-data-jpa:$SPRING_BOOT_VERSION
 install $SPRING_BOOT_GROUP:spring-boot-starter-actuator:$SPRING_BOOT_VERSION
 install $SPRING_BOOT_GROUP:spring-boot-starter-test:$SPRING_BOOT_VERSION

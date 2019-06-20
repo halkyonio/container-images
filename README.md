@@ -11,6 +11,7 @@ docker login -u <user> -p <pwd> quay.io
 
 Project to build a jdk8 s2i image containing some spring boot starters dependencies. See `install_spring_boot_dependencies.sh` script
 ```bash
+cd spring-boot-maven-s2i
 docker build . -t quay.io/snowdrop/spring-boot-maven-s2i
 docker push quay.io/snowdrop/spring-boot-maven-s2i
 ```
