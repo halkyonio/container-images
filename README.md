@@ -57,8 +57,8 @@ Execute these commands to build the docker image and publish it on `Quay.io`
  
 ```bash
 cd java-s2i
-docker build -t spring-boot-http:latest ./java-s2i/Dockerfile
-TAG_ID=$(docker images -q <username>/spring-boot-http:latest)
+docker build -t spring-boot-http:latest .
+TAG_ID=$(docker images -q spring-boot-http:latest)
 docker tag $TAG_ID quay.io/snowdrop/spring-boot-s2i
 docker push quay.io/snowdrop/spring-boot-s2i
 ```
