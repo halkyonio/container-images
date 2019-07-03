@@ -37,7 +37,7 @@ docker tag $TAG_ID quay.io/snowdrop/supervisord
 docker push quay.io/snowdrop/supervisord
 ```
   
-## Java S2I image
+## OpenJDK S2I image
 
 Due to permissions's issue to access the folder `/tmp/src`, the Red Hat OpenJDK1.8 S2I image must be enhanced to add the permission needed for the group `0`
 
@@ -57,7 +57,7 @@ Execute these commands to build the docker image and publish it on `Quay.io`
  
 ```bash
 cd java-s2i
-docker build -t spring-boot-http:latest ./spring-boot-s2i/Dockerfile
+docker build -t spring-boot-http:latest ./java-s2i/Dockerfile
 TAG_ID=$(docker images -q <username>/spring-boot-http:latest)
 docker tag $TAG_ID quay.io/snowdrop/spring-boot-s2i
 docker push quay.io/snowdrop/spring-boot-s2i
