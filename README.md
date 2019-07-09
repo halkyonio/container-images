@@ -1,6 +1,6 @@
 # Snowdrop Container Images
 
-## Prerequesites
+## Prerequisites
 
 Be logged with the Quay registry
 ```bash
@@ -15,7 +15,6 @@ cd spring-boot-maven-s2i
 docker build . -t quay.io/snowdrop/spring-boot-maven-s2i
 docker push quay.io/snowdrop/spring-boot-maven-s2i
 ```
-
   
 ## Supervisord image
 
