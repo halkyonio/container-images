@@ -37,5 +37,6 @@ install $SPRING_BOOT_GROUP:spring-boot-maven-plugin:$SPRING_BOOT_VERSION
 install $SPRING_BOOT_GROUP:spring-boot-tools:$SPRING_BOOT_VERSION:pom
 install $SPRING_BOOT_GROUP:spring-boot-maven-plugin:$SPRING_BOOT_VERSION
 install junit:junit:$JUNIT_VERSION
+install io.fabric8:fabric8-maven-plugin:$FABRIC8_VERSION
 echo -e "${BLUE}Spring Boot ${SPRING_BOOT_VERSION} dependencies installed ${NC}"
 rm -Rf /tmp/maven-*

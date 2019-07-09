@@ -1,7 +1,8 @@
 FROM registry.redhat.io/redhat-openjdk-18/openjdk18-openshift
 
-ARG SPRING_BOOT_VERSION=2.1.5.RELEASE
+ARG SPRING_BOOT_VERSION=2.1.6.RELEASE
 ARG JUNIT_VERSION=4.12
+ARG FABRIC8_VERSION=3.5.40
 ENV SPRING_BOOT_GROUP=org.springframework.boot
 ENV SPRING_GROUP=org.springframework
 
