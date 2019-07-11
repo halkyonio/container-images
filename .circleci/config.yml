@@ -13,6 +13,9 @@ jobs:
           name: Install k8s
           command: |
             GO111MODULE="on" go get sigs.k8s.io/kind@v0.4.0
+      - run:
+          name: Create Kibnd cluster
+          command: |
             kind create cluster --name circleci
 
       - run:

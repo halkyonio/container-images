@@ -6,7 +6,7 @@ USER root
 RUN yum install -y epel-release && \
     yum install -y ansible git tar curl wget gcc sudo make yum-utils device-mapper-persistent-data lvm2 && \
     yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo && \
-    yum install -y docker-ce && \
+    yum install -y docker-ce kubelet kubeadm kubectl && \
     yum clean all
 
 # install jq
@@ -30,9 +30,13 @@ RUN (cd /lib/systemd/system/sysinit.target.wants/; for i in *; do [ $i == \
   rm -f /lib/systemd/system/anaconda.target.wants/*;
 VOLUME [ "/sys/fs/cgroup" ]
 
+RUN sudo systemctl enable kubelet
+
 # Configure circleci user
 RUN groupadd -r circleci && useradd -r -d /home/circleci -m -g circleci circleci
 RUN echo "%circleci        ALL=(ALL)       NOPASSWD: ALL" >> /etc/sudoers
 
 USER circleci
+
+CMD ["/usr/sbin/init"]
 
