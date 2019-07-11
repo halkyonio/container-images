@@ -3,7 +3,7 @@ version: 2.1
 jobs:
   k8s:
     docker:
-      - image: circleci/golang:1.12
+      - image: circleci/golang:1.12.7
 
     working_directory: /go/src/github.com/{{ORG_NAME}}/{{REPO_NAME}}
     steps:
