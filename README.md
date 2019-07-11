@@ -7,6 +7,15 @@ Be logged with the Quay registry
 docker login -u <user> -p <pwd> quay.io
 ```
 
+## Centos7 CircleCI image
+
+Project to build a Centos7 image able to run on CircleCI.
+```bash
+cd circleci
+docker build . -t quay.io/snowdrop/centos-circleci
+docker push quay.io/snowdrop/centos-circleci
+```
+
 ## Spring Boot maven s2i image
 
 Project to build a jdk8 s2i image containing some spring boot starters dependencies. See `install_spring_boot_dependencies.sh` script

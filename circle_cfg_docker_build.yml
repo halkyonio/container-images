@@ -1,0 +1,30 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: docker:17.06.0-git
+    steps:
+      - setup_remote_docker
+      - checkout
+      - run:
+          name: Build Docker image
+          command: docker build -t scholzj/circleci-centos-golang:circle .
+      - deploy:
+          name: Tag docker images
+          command: |
+            docker tag scholzj/circleci-centos-golang:circle docker.io/scholzj/circleci-centos-golang:centos7-go1.10.0
+            docker tag scholzj/circleci-centos-golang:circle docker.io/scholzj/circleci-centos-golang:latest
+      - deploy:
+          name: Login to Docker Hub
+          command: docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+      - deploy:
+          name: Push docker images
+          command: |
+            docker push scholzj/circleci-centos-golang:centos7-go1.10.0
+            docker push scholzj/circleci-centos-golang:latest
+workflows:
+  version: 2
+  build-workflow:
+    jobs:
+      - build:
+          context: org-global
