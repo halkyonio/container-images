@@ -16,7 +16,7 @@ jobs:
       - run:
           name: Create Kibnd cluster
           command: |
-            kind create cluster --name circleci
+            kind create cluster --image=kindest/node:v1.14.0 --name circleci
 
       - run:
           name: Get k8s config
