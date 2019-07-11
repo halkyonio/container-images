@@ -17,7 +17,7 @@ jobs:
           name: Create Kibnd cluster
           command: |
             docker ps
-            kind create cluster --image=kindest/node:v1.14.0 --name circleci --loglevel=debug
+            kind create cluster --image=kindest/node:v1.14.3 --name circleci --loglevel=debug
 
       - run:
           name: Get k8s config
