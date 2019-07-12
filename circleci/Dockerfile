@@ -9,6 +9,9 @@ RUN yum install -y epel-release && \
     yum install -y docker-ce && \
     yum clean all
 
+ADD kubernetes.repo /etc/yum.repos.d/kubernetes.repo
+RUN yum install -y kubectl
+
 # install jq
 RUN JQ_URL="https://circle-downloads.s3.amazonaws.com/circleci-images/cache/linux-amd64/jq-latest" \
   && curl --silent --show-error --location --fail --retry 3 --output /usr/bin/jq $JQ_URL \
