@@ -9,7 +9,7 @@ RUN yum install -y epel-release && \
     yum install -y docker-ce && \
     yum clean all
 
-ADD kubernetes.repo /etc/yum.repos.d/kubernetes.repo
+COPY kubernetes.repo /etc/yum.repos.d/kubernetes.repo
 RUN yum install -y kubectl
 
 # install jq
