@@ -53,5 +53,7 @@ workflows:
   k8s-centos:
     jobs:
       - build
-      - k8s
+      - k8s:
+          requires:
+            - build
 
