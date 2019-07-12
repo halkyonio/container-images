@@ -31,3 +31,5 @@ RUN echo "%circleci        ALL=(ALL)       NOPASSWD: ALL" >> /etc/sudoers
 
 USER circleci
 
+CMD ["/bin/sh"]
+
