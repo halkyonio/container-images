@@ -9,8 +9,12 @@ RUN yum install -y epel-release && \
     yum install -y docker-ce && \
     yum clean all
 
+# Install kubectl
 COPY kubernetes.repo /etc/yum.repos.d/kubernetes.repo
 RUN yum install -y kubectl
+
+# Install go
+RUN curl https://raw.githubusercontent.com/golang/dep/master/install.sh | INSTALL_DIRECTORY=/usr/local/bin sh
 
 # install jq
 RUN JQ_URL="https://circle-downloads.s3.amazonaws.com/circleci-images/cache/linux-amd64/jq-latest" \
