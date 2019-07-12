@@ -1,6 +1,29 @@
 version: 2.1
 
 jobs:
+  build:
+    docker:
+      - image: docker:17.06.0-git
+    steps:
+      - setup_remote_docker
+      - checkout
+      - run:
+          name: Build Docker image
+          command: |
+            cd circleci
+            docker build -t quay.io/snowdrop/centos-circleci .
+      #- deploy:
+      #    name: Tag docker images
+      #    command: |
+      #      docker tag scholzj/circleci-centos-golang:circle docker.io/scholzj/circleci-centos-golang:centos7-go1.10.0
+      #      docker tag scholzj/circleci-centos-golang:circle docker.io/scholzj/circleci-centos-golang:latest
+      - deploy:
+          name: Login to Quay Hub
+          command: docker login -u="$QUAY_USERNAME" -p="$QUAY_PASSWORD"
+      - deploy:
+          name: Push docker images
+          command: |
+            docker push quay.io/snowdrop/centos-circleci
   k8s:
     docker:
       - image: circleci/golang:1.12.7
@@ -29,5 +52,6 @@ workflows:
   version: 2
   k8s-centos:
     jobs:
+      - build
       - k8s
 
