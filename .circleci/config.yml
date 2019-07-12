@@ -19,7 +19,7 @@ jobs:
       #      docker tag scholzj/circleci-centos-golang:circle docker.io/scholzj/circleci-centos-golang:latest
       - deploy:
           name: Login to Quay Hub
-          command: docker login -u="$QUAY_USERNAME" -p="$QUAY_PASSWORD"
+          command: docker login -u="$QUAY_USERNAME" -p="$QUAY_PASSWORD" quay.io
       - deploy:
           name: Push docker images
           command: |
