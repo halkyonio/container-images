@@ -1,6 +1,8 @@
 FROM		centos:7
 MAINTAINER 	snowdrop "info@snowdrop.dev"
 
+ARG GO_VERSION=1.12.7
+
 # Install needed software
 USER root
 RUN yum install -y epel-release && \
@@ -14,10 +16,15 @@ COPY kubernetes.repo /etc/yum.repos.d/kubernetes.repo
 RUN yum install -y kubectl
 
 # Install go
+RUN wget https://dl.google.com/go/go$GO_VERSION.linux-amd64.tar.gz && \
+    tar -C /usr/local -xzf go$GO_VERSION.linux-amd64.tar.gz
+
 ENV GOPATH /go
 ENV PATH $GOPATH/bin:/usr/local/go/bin:$PATH
 RUN mkdir -p "$GOPATH/src" "$GOPATH/bin" && chmod -R 777 "$GOPATH"
 WORKDIR $GOPATH
+
+# Install go dep manager
 RUN curl https://raw.githubusercontent.com/golang/dep/master/install.sh | INSTALL_DIRECTORY=/usr/local/bin sh
 
 # install jq
