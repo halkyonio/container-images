@@ -11,6 +11,13 @@ RUN yum install -y epel-release && \
     yum install -y docker-ce && \
     yum clean all
 
+# Set timezone to UTC by default
+RUN ln -sf /usr/share/zoneinfo/Etc/UTC /etc/localtime
+
+# Use unicode
+RUN locale-gen C.UTF-8 || true
+ENV LANG=C.UTF-8
+
 # Install kubectl
 COPY kubernetes.repo /etc/yum.repos.d/kubernetes.repo
 RUN yum install -y kubectl
