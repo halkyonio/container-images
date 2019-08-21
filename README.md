@@ -28,7 +28,7 @@ docker push quay.io/halkyonio/spring-boot-maven-s2i
 ## Supervisord image
 
 **WARNING**: In order to build a multi-stages docker image, it is required to install [imagebuilder](https://github.com/openshift/imagebuilder) 
-as the docker version packaged with minishift is too old and doesn't support such docker multi-stage option !
+as the docker version packaged with MiniShift is too old and doesn't support such docker multi-stage option !
 
 To build the `copy-supervisord` docker image containing the `go supervisord` application, then execute these instructions
 
