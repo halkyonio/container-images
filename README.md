@@ -21,16 +21,16 @@ docker push quay.io/snowdrop/centos-circleci
 Project to build a jdk8 s2i image containing some spring boot starters dependencies. See `install_spring_boot_dependencies.sh` script
 ```bash
 cd spring-boot-maven-s2i
-docker build . -t quay.io/snowdrop/spring-boot-maven-s2i
-docker push quay.io/snowdrop/spring-boot-maven-s2i
+docker build . -t quay.io/halkyonio/spring-boot-maven-s2i
+docker push quay.io/halkyonio/spring-boot-maven-s2i
 ```
   
 ## Supervisord image
 
 **WARNING**: In order to build a multi-stages docker image, it is required to install [imagebuilder](https://github.com/openshift/imagebuilder) 
-as the docker version packaged with minishift is too old and doesn't support such multi-stage option !
+as the docker version packaged with minishift is too old and doesn't support such docker multi-stage option !
 
-To build the `copy-supervisord` docker image containing the `go supervisord` application, then follow these instructions
+To build the `copy-supervisord` docker image containing the `go supervisord` application, then execute these instructions
 
 ```bash
 cd supervisord
@@ -41,8 +41,8 @@ Tag the docker image and push it to `quay.io`
 
 ```bash
 TAG_ID=$(docker images -q copy-supervisord:latest)
-docker tag $TAG_ID quay.io/snowdrop/supervisord
-docker push quay.io/snowdrop/supervisord
+docker tag $TAG_ID quay.io/halkyonio/supervisord
+docker push quay.io/halkyonio/supervisord
 ```
   
 ## OpenJDK S2I image
@@ -67,6 +67,6 @@ Execute these commands to build the docker image and publish it on `Quay.io`
 cd java-s2i
 docker build -t spring-boot-http:latest .
 TAG_ID=$(docker images -q spring-boot-http:latest)
-docker tag $TAG_ID quay.io/snowdrop/spring-boot-s2i
-docker push quay.io/snowdrop/spring-boot-s2i
+docker tag $TAG_ID quay.io/halkyonio/spring-boot-s2i
+docker push quay.io/halkyonio/spring-boot-s2i
 ```
