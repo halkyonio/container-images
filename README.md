@@ -24,6 +24,20 @@ cd spring-boot-maven-s2i
 docker build . -t quay.io/halkyonio/spring-boot-maven-s2i
 docker push quay.io/halkyonio/spring-boot-maven-s2i
 ```
+To build the snapshots, first build the different maven snapshot projects, next install a local HTTP Server
+using your local m2 repository and define within the `settings.xml` the IP address of your server
+```bash
+npm install http-server -g
+http-server ~/.m2/repository
+```
+and finally build the docker image tagged as `snapshot` 
+
+```bash
+docker build -t quay.io/halkyonio/spring-boot-maven-s2i:snapshot -f Dockerfile-snapshot .
+docker push quay.io/halkyonio/spring-boot-maven-s2i:snapshot
+```
+
+**Remark**: Yiu can change the version of Spring, Dekorate, ... to be packaged within the image using the `--build-arg KEY=VAL` property
   
 ## Supervisord image
 

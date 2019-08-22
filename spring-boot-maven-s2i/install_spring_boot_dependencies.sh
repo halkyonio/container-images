@@ -12,7 +12,7 @@ YELLOW='\033[0;33m'
 BLUE='\033[0;34m'
 
 function install {
-  mvn dependency:get -Dmaven.repo.local=/tmp/artifacts/m2 -Dartifact=$1 > /tmp/maven-$1.log
+  mvn -s /tmp/settings.xml dependency:get -Dartifact=$1 > /tmp/maven-$1.log
   if [ $? -eq 0 ]; then
     echo -e "🍻  ${YELLOW}$1 installed successfully ${NC}"
   else
@@ -23,6 +23,7 @@ function install {
 }
 
 echo -e "${BLUE}Installing Spring Boot ${SPRING_BOOT_VERSION} dependencies..."
+install $DEKORATE_GROUP:kubernetes-spring-starter:$DEKORATE_VERSION
 install $SPRING_BOOT_GROUP:spring-boot-dependencies:$SPRING_BOOT_VERSION:pom
 install $SPRING_BOOT_GROUP:spring-boot-starter-parent:$SPRING_BOOT_VERSION:pom
 install $SPRING_BOOT_GROUP:spring-boot-starter-web:$SPRING_BOOT_VERSION
@@ -36,6 +37,7 @@ install $SPRING_BOOT_GROUP:spring-boot-loader-tools:$SPRING_BOOT_VERSION
 install $SPRING_BOOT_GROUP:spring-boot-maven-plugin:$SPRING_BOOT_VERSION
 install $SPRING_BOOT_GROUP:spring-boot-tools:$SPRING_BOOT_VERSION:pom
 install $SPRING_BOOT_GROUP:spring-boot-maven-plugin:$SPRING_BOOT_VERSION
+install $DEKORATE_GROUP:halkyon-annotations:$DEKORATE_VERSION
 install junit:junit:$JUNIT_VERSION
 install io.fabric8:fabric8-maven-plugin:$FABRIC8_VERSION
 echo -e "${BLUE}Spring Boot ${SPRING_BOOT_VERSION} dependencies installed ${NC}"
