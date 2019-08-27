@@ -82,5 +82,7 @@ cd java-s2i
 docker build -t spring-boot-http:latest .
 TAG_ID=$(docker images -q spring-boot-http:latest)
 docker tag $TAG_ID quay.io/halkyonio/spring-boot-s2i
+docker tag $TAG_ID quay.io/halkyonio/openjdk8-s2i
 docker push quay.io/halkyonio/spring-boot-s2i
+docker push quay.io/halkyonio/openjdk8-s2i
 ```
