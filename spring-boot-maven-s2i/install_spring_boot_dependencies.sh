@@ -22,8 +22,9 @@ function install {
   fi
 }
 
-echo -e "${BLUE}Installing Spring Boot ${SPRING_BOOT_VERSION} dependencies..."
-install $DEKORATE_GROUP:kubernetes-spring-starter:$DEKORATE_VERSION
+echo -e "${BLUE}Installing Snowdrop ${SNOWDROP_VERSION} bom..."
+install $SNOWDROP_GROUP:spring-boot-bom:$SNOWDROP_VERSION:pom
+echo -e "${BLUE}Installing Spring Boot ${SPRING_BOOT_VERSION} bom, dependencies..."
 install $SPRING_BOOT_GROUP:spring-boot-dependencies:$SPRING_BOOT_VERSION:pom
 install $SPRING_BOOT_GROUP:spring-boot-starter-parent:$SPRING_BOOT_VERSION:pom
 install $SPRING_BOOT_GROUP:spring-boot-starter-web:$SPRING_BOOT_VERSION
@@ -37,7 +38,11 @@ install $SPRING_BOOT_GROUP:spring-boot-loader-tools:$SPRING_BOOT_VERSION
 install $SPRING_BOOT_GROUP:spring-boot-maven-plugin:$SPRING_BOOT_VERSION
 install $SPRING_BOOT_GROUP:spring-boot-tools:$SPRING_BOOT_VERSION:pom
 install $SPRING_BOOT_GROUP:spring-boot-maven-plugin:$SPRING_BOOT_VERSION
-install $DEKORATE_GROUP:halkyon-annotations:$DEKORATE_VERSION
+echo -e "${BLUE}Installing Dekorate ${$DEKORATE_VERSION} ..."
+install $DEKORATE_GROUP:halkyon-spring-starter:$DEKORATE_VERSION
+install $DEKORATE_GROUP:kubernetes-spring-starter:$DEKORATE_VERSION
+install $DEKORATE_GROUP:openshift-spring-starter:$DEKORATE_VERSION
+echo -e "${BLUE}Installing Tools such as Junit, Fabric8, ..."
 install junit:junit:$JUNIT_VERSION
 install io.fabric8:fabric8-maven-plugin:$FABRIC8_VERSION
 echo -e "${BLUE}Spring Boot ${SPRING_BOOT_VERSION} dependencies installed ${NC}"
