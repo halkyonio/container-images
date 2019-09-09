@@ -8,7 +8,7 @@ ENV GOPATH /go
 WORKDIR /supervisord/
 COPY conf/ conf/
 # this shell script is used as the entrypoint that will
-# invoke the 'boostrap' executable (thus creating 'supervisor.conf')
+# invoke the 'bootstrap' executable (thus creating 'supervisor.conf')
 # and then copy both the actual supervisord executable and the aforementioned
 # generated configuration file into a dedicated output directory
 COPY execute.sh .
@@ -19,6 +19,14 @@ COPY main.go .
 # the supervisor configuration
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -o bootstrap main.go
 
+# The app check application is a HTTP Server able to check if a uber jar file is present under
+# the directory : /deployments, if only one jar exists, if the jar file size is not empty
+# It works under the port 8585
+COPY appcheck.go .
+
+# Compile app check to include within the image another ednpoint that the supervisoed could use
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -o appcheck appcheck.go
+
 # Copy the application into a thin image
 FROM busybox
 
@@ -28,6 +36,7 @@ ARG SUPERVISORD_DIR=/opt/supervisord
 RUN mkdir -p ${SUPERVISORD_DIR}/conf ${SUPERVISORD_DIR}/bin
 
 COPY --from=builder /supervisord/bootstrap ${SUPERVISORD_DIR}/bin/
+COPY --from=builder /supervisord/appcheck ${SUPERVISORD_DIR}/bin/
 COPY --from=builder /supervisord/execute.sh ${SUPERVISORD_DIR}/bin/
 COPY --from=builder /supervisord/conf/* ${SUPERVISORD_DIR}/conf
 
@@ -39,6 +48,7 @@ RUN chgrp -R 0 ${SUPERVISORD_DIR} && \
     chmod -R 666 ${SUPERVISORD_DIR}/conf/* && \
     chmod 775 ${SUPERVISORD_DIR}/bin/supervisord && \
     chmod 775 ${SUPERVISORD_DIR}/bin/bootstrap && \
+    chmod 775 ${SUPERVISORD_DIR}/bin/appcheck && \
     chmod 775 ${SUPERVISORD_DIR}/bin/execute.sh && \
     chmod 775 ${SUPERVISORD_DIR}/conf/echo.sh
 
