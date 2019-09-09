@@ -40,7 +40,7 @@ spec:
   initContainers:
   - env:
     - name: CMDS
-      value: "run-java:/usr/local/s2i/run;appcheck:/var/lib/supervisord/bin/appcheck;compile-java:/usr/local/s2i/assemble"
+      value: "run-java:/usr/local/s2i/run:true;appcheck:/var/lib/supervisord/bin/appcheck:false;compile-java:/usr/local/s2i/assemble:false"
     image: quay.io/halkyonio/supervisord:test
     imagePullPolicy: Always
     name: copy-supervisord

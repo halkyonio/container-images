@@ -16,8 +16,9 @@ const (
 )
 
 type Program struct {
-	Name    string
-	Command string
+	Name       string
+	Command    string
+	AutoStart  string
 }
 
 func main() {
@@ -45,7 +46,7 @@ func main() {
 		for i := range cmds {
 			cmd := strings.Split(cmds[i], ":")
 			log.Println("Command : ", cmd)
-			p := Program{cmd[0], cmd[1]}
+			p := Program{cmd[0], cmd[1], cmd[2]}
 			m["cmd-"+string(i)] = append(m["cmd-"+string(i)], p)
 		}
 	} else {

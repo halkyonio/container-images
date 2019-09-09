@@ -1,6 +1,6 @@
 {{range $index, $element := .}}{{range $element}}[program:{{.Name}}]
 command = {{.Command}}
-autostart = false
+autostart = {{.AutoStart}}
 stdout_logfile = /dev/stdout
 stderr_logfile = /dev/stdout
 stdout_events_enabled = true
