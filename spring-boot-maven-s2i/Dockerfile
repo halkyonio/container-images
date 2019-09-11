@@ -18,5 +18,6 @@ RUN chown 1001:0 /tmp/install_spring_boot_dependencies.sh && \
     chmod a+x /tmp/install_spring_boot_dependencies.sh && \
     mkdir -p /tmp/artifacts/m2 && \
     scl enable rh-maven35 /tmp/install_spring_boot_dependencies.sh && \
+    chmod a+x /tmp/artifacts && \
     chown -R 1001:0 /tmp/artifacts && \
     rm -f /tmp/install_spring_boot_dependencies.sh
