@@ -37,7 +37,7 @@ docker build -t quay.io/halkyonio/spring-boot-maven-s2i:snapshot -f Dockerfile-s
 docker push quay.io/halkyonio/spring-boot-maven-s2i:snapshot
 ```
 
-**Remark**: Yiu can change the version of Spring, Dekorate, ... to be packaged within the image using the `--build-arg KEY=VAL` property
+**Remark**: You can change the version of Spring, Dekorate, ... to be packaged within the image using the `--build-arg KEY=VAL` property
   
 ## Supervisord image
 

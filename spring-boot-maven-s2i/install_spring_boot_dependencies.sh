@@ -38,7 +38,7 @@ install $SPRING_BOOT_GROUP:spring-boot-loader-tools:$SPRING_BOOT_VERSION
 install $SPRING_BOOT_GROUP:spring-boot-maven-plugin:$SPRING_BOOT_VERSION
 install $SPRING_BOOT_GROUP:spring-boot-tools:$SPRING_BOOT_VERSION:pom
 install $SPRING_BOOT_GROUP:spring-boot-maven-plugin:$SPRING_BOOT_VERSION
-echo -e "${BLUE}Installing Dekorate ${$DEKORATE_VERSION} ..."
+echo -e "${BLUE}Installing Dekorate ${DEKORATE_VERSION} ..."
 install $DEKORATE_GROUP:halkyon-spring-starter:$DEKORATE_VERSION
 install $DEKORATE_GROUP:kubernetes-spring-starter:$DEKORATE_VERSION
 install $DEKORATE_GROUP:openshift-spring-starter:$DEKORATE_VERSION
