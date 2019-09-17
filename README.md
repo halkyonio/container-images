@@ -21,8 +21,8 @@ docker push quay.io/snowdrop/centos-circleci
 Project to build a jdk8 s2i image containing some spring boot starters dependencies. See `install_spring_boot_dependencies.sh` script
 ```bash
 cd spring-boot-maven-s2i
-docker build . -t quay.io/halkyonio/spring-boot-maven-s2i
-docker push quay.io/halkyonio/spring-boot-maven-s2i
+docker build . -t quay.io/halkyonio/spring-boot-maven-s2i:latest
+docker push quay.io/halkyonio/spring-boot-maven-s2i:latest
 ```
 To build the snapshots, first build the different maven snapshot projects, next install a local HTTP Server
 using your local m2 repository and define within the `settings.xml` the IP address of your server
@@ -86,3 +86,41 @@ docker tag $TAG_ID quay.io/halkyonio/openjdk8-s2i
 docker push quay.io/halkyonio/spring-boot-s2i
 docker push quay.io/halkyonio/openjdk8-s2i
 ```
+## Maven repo
+
+The purpose of this image is to extend the Maven image, to package the GAVs of Spring Boot, Dekorate under the path `/tmp/artefacts`
+of the image in order to provide it as internal maven cache for java maven build when you use this option `-Dmaven.repo.local=/tmp/.m2`
+
+Example of multi-layers docker file able to use it 
+```
+## Stage 1 : build with maven builder image
+# FROM maven:3.5-jdk-8 AS build
+FROM quay.io/halkyonio/spring-boot-maven AS build
+COPY . /usr/src
+USER root
+
+VOLUME /tmp/artefacts
+RUN chown -R 1001:0 /usr/src
+RUN mvn -f /usr/src/pom.xml clean package -Dmaven.repo.local=/tmp/artefacts
+
+## Stage 2 : create the final image
+FROM registry.access.redhat.com/redhat-openjdk-18/openjdk18-openshift
+
+USER root
+WORKDIR /work/
+COPY --from=build /usr/src/target/*.jar /work/application
+RUN chown -R 1001:0 /work && chmod -R 775 /work
+
+EXPOSE 8080
+CMD ["./application"]
+```
+
+To build/push it, use the following commands
+```bash
+cd maven-repo
+docker build -t spring-boot-maven:latest .
+TAG_ID=$(docker images -q spring-boot-maven:latest)
+docker tag $TAG_ID quay.io/halkyonio/spring-boot-maven
+docker push quay.io/halkyonio/spring-boot-maven
+```
+
