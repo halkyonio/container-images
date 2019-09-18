@@ -1,6 +1,6 @@
 FROM maven:3.6.2-jdk-8-slim
 
-ARG SPRING_BOOT_VERSION=2.1.6.RELEASE
+ARG SPRING_BOOT_VERSION=2.1.6.Final
 ARG SNOWDROP_VERSION=2.1.6.SP3
 ARG JUNIT_VERSION=4.12
 ARG FABRIC8_VERSION=3.5.40
@@ -23,5 +23,7 @@ RUN /bin/bash -c "source /tmp/install_spring_boot_dependencies.sh"
 
 RUN chmod a+x /tmp/artefacts && \
     chown -R 1001:0 /tmp/artefacts
+
+# VOLUME /tmp/artefacts
 
 RUN rm -f /tmp/install_spring_boot_dependencies.sh
