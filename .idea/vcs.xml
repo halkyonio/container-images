@@ -8,5 +8,6 @@
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/ocp/rest-http-example" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sandbox/rest-http-example" vcs="Git" />
   </component>
 </project>
