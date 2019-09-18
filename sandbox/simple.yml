@@ -1,0 +1,13 @@
+apiVersion: halkyon.io/v1beta1
+kind: Component
+metadata:
+  name: simple
+spec:
+  deploymentMode: build
+  port: 8080
+  buildConfig:
+    type: s2i
+    url: https://github.com/snowdrop/rest-http-example.git
+    ref: 2.1.6-4
+  runtime: spring-boot
+  version: 2.1.6

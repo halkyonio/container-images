@@ -1,0 +1,14 @@
+apiVersion: halkyon.io/v1beta1
+kind: Component
+metadata:
+  name: module
+spec:
+  deploymentMode: build
+  port: 8080
+  buildConfig:
+    type: s2i
+    url: https://github.com/rhte-eu/cmoullia.git
+    ref: master
+    moduleDirName: fruit-client-sb
+  runtime: spring-boot
+  version: 2.1.6

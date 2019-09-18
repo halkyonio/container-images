@@ -1,0 +1,23 @@
+apiVersion: tekton.dev/v1alpha1
+kind: TaskRun
+metadata:
+  name: example-jib-maven
+spec:
+  taskRef:
+    name: jib-maven
+  inputs:
+    params:
+      - name: DIRECTORY
+        value: .
+    resources:
+      - name: source
+        resourceSpec:
+          type: git
+          params:
+            - name: url
+              value: https://github.com/snowdrop/rest-http-example.git
+  outputs:
+    resources:
+      - name: image
+        resourceRef:
+          name: sb-image

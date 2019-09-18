@@ -1,0 +1,10 @@
+apiVersion: tekton.dev/v1alpha1
+kind: PipelineResource
+metadata:
+  name: sb-image
+spec:
+  type: image
+  params:
+    - name: url
+      # value: gcr.io/tekton-task-project/my-image
+      value: docker-registry.default.svc:5000/test/sb-image

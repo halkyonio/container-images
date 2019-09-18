@@ -1,0 +1,82 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: fruit-client-sb
+    component_cr: fruit-client-sb
+    deployment: fruit-client-sb
+  name: fruit-client-sb
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: fruit-client-sb
+      component_cr: fruit-client-sb
+      deployment: fruit-client-sb
+  template:
+    metadata:
+      labels:
+        app: fruit-client-sb
+        component_cr: fruit-client-sb
+        deployment: fruit-client-sb
+      name: fruit-client-sb
+    spec:
+      containers:
+        - args:
+            - '-c'
+            - /var/lib/supervisord/conf/supervisor.conf
+          command:
+            - /var/lib/supervisord/bin/supervisord
+          env:
+            - name: ENDPOINT_BACKEND
+              value: 'http://fruit-backend-sb:8080/api/fruits'
+          image: 'quay.io/halkyonio/spring-boot-s2i:latest'
+          imagePullPolicy: Always
+          name: fruit-client-sb
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+            - mountPath: /var/lib/supervisord
+              name: shared-data
+            - mountPath: /tmp/artifacts
+              name: m2-data-fruit-client-sb
+            - mountPath: /deployments
+              name: m2-data-fruit-client-sb
+      dnsPolicy: ClusterFirst
+      initContainers:
+        - env:
+            - name: CMDS
+              value: >-
+                run-java:/usr/local/s2i/run;run-node:/usr/libexec/s2i/run;compile-java:/usr/local/s2i/assemble;build:/deployments/buildapp
+          image: 'quay.io/halkyonio/supervisord:latest'
+          imagePullPolicy: Always
+          name: copy-supervisord
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /var/lib/supervisord
+            name: shared-data
+        # - name: deployments-data-permission-fix
+        #   image: busybox
+        #   command: ["/bin/chown","-R","1001:0", "/deployments"]
+        #   volumeMounts:
+        #   - mountPath: /deployments
+        #     name: m2-data-fruit-client-sb
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+      volumes:
+        - emptyDir: {}
+          name: shared-data
+        - name: m2-data-fruit-client-sb
+          persistentVolumeClaim:
+            claimName: m2-data-fruit-client-sb
