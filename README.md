@@ -125,7 +125,7 @@ docker push quay.io/halkyonio/spring-boot-maven
 ```
 
 Alternate approach where we use `dependency:go-offline` to populate 
-the maven repo using a `pom.xml` file.
+the maven repo offline using a `pom.xml` file and package it within the image at `/tmp/artefacts`.
 
 ```bash
 cd maven-repo
