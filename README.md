@@ -124,6 +124,9 @@ docker tag $TAG_ID quay.io/halkyonio/spring-boot-maven
 docker push quay.io/halkyonio/spring-boot-maven
 ```
 
+Alternate approach where we use `dependency:go-offline` to populate 
+the maven repo using a `pom.xml` file.
+
 ```bash
 cd maven-repo
 docker build -t spring-boot-maven:snapshot -f DockerfileOffline .
