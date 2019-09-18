@@ -124,3 +124,11 @@ docker tag $TAG_ID quay.io/halkyonio/spring-boot-maven
 docker push quay.io/halkyonio/spring-boot-maven
 ```
 
+```bash
+cd maven-repo
+docker build -t spring-boot-maven:snapshot -f DockerfileOffline .
+TAG_ID=$(docker images -q spring-boot-maven:snapshot)
+docker tag $TAG_ID quay.io/halkyonio/spring-boot-maven:snapshot
+docker push quay.io/halkyonio/spring-boot-maven:snapshot
+```
+
