@@ -1,4 +1,4 @@
-# Snowdrop Container Images
+# Container Images
 
 ## Prerequisites
 
