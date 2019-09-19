@@ -152,7 +152,8 @@ docker tag $TAG_ID quay.io/halkyonio/hal
 docker push quay.io/halkyonio/hal
 ```
 
-To use it within an existing Spring Boot Maven project
+To use it within an existing Spring Boot Maven project.
+Pass as env `cmd` to specify either if you want to `build` the project or to launch `java`
 ```bash
 docker run -it -v "$(pwd)":/usr/src -e CONTEXTPATH=. -e MODULEDIRNAME=. -e cmd=build hal
 docker run -it -v "$(pwd)":/usr/src -e CONTEXTPATH=. -e MODULEDIRNAME=. -e cmd=run hal
