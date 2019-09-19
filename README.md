@@ -135,13 +135,19 @@ docker tag $TAG_ID quay.io/halkyonio/spring-boot-maven:snapshot
 docker push quay.io/halkyonio/spring-boot-maven:snapshot
 ```
 
-## Hal image
+## Hal Maven JDK8 image
 
 This image extends the maven jdk image `maven:3.6.2-jdk-8-slim`, includes a offline
 maven repo and needed bash scripts to perform: 
 
-- `mvn -f /usr/src/${CONTEXTPATH}/${MODULEDIRNAME}/pom.xml package -Dmaven.repo.local=/tmp/artefacts`
+- `mvn -f /usr/src/${CONTEXTPATH}/${MODULEDIRNAME}/pom.xml ${MAVEN_ARGS} package -Dmaven.repo.local=/tmp/artefacts`
 - `java -cp . -jar /usr/src/${CONTEXTPATH}/${MODULEDIRNAME}/target/*.jar`
+
+ENV Vars available:
+
+- `CONTEXTPATH`: path to access the directory of the maven project
+- `MODULEDIRNAME`: Name of the maven module directory when your project is designed as a maven multi-modules structure
+- `MAVEN_ARGS`: arguments to pass to the Maven command (e.g. -X)
 
 To build the image
 ```bash
@@ -152,7 +158,7 @@ docker tag $TAG_ID quay.io/halkyonio/hal-maven-jdk
 docker push quay.io/halkyonio/hal-maven-jdk
 ```
 
-To use it within an existing Spring Boot Maven project.
+To use it with an existing Spring Boot Maven project.
 Pass as env `cmd` to specify either if you want to `build` the project or to launch `java`
 ```bash
 docker run -it -v "$(pwd)":/usr/src -e CONTEXTPATH=. -e MODULEDIRNAME=. -e cmd=build hal
@@ -161,8 +167,8 @@ docker run -it -v "$(pwd)":/usr/src -e CONTEXTPATH=. -e MODULEDIRNAME=. -e cmd=r
 
 You can also test it using k8s/ocp and a pod managed by a supervisord
 ```bash
-oc delete  -f ./sandbox/pod-hal.yml
-oc apply  -f ./sandbox/pod-hal.yml
+oc delete -f ./sandbox/pod-hal.yml
+oc apply -f ./sandbox/pod-hal.yml
 
 kubectl cp pom.xml hal:/usr/src -n test
 kubectl cp src hal:/usr/src -n test
