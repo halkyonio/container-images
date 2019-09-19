@@ -3,7 +3,7 @@ kind: Component
 metadata:
   name: simple
 spec:
-  deploymentMode: build
+  deploymentMode: dev
   port: 8080
   buildConfig:
     type: s2i

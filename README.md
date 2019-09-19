@@ -147,9 +147,9 @@ To build the image
 ```bash
 cd hal
 docker build -t hal . 
-TAG_ID=$(docker images -q build)
-docker tag $TAG_ID quay.io/halkyonio/hal
-docker push quay.io/halkyonio/hal
+TAG_ID=$(docker images -q hal)
+docker tag $TAG_ID quay.io/halkyonio/hal-maven-jdk
+docker push quay.io/halkyonio/hal-maven-jdk
 ```
 
 To use it within an existing Spring Boot Maven project.
@@ -157,4 +157,14 @@ Pass as env `cmd` to specify either if you want to `build` the project or to lau
 ```bash
 docker run -it -v "$(pwd)":/usr/src -e CONTEXTPATH=. -e MODULEDIRNAME=. -e cmd=build hal
 docker run -it -v "$(pwd)":/usr/src -e CONTEXTPATH=. -e MODULEDIRNAME=. -e cmd=run hal
+```
+
+You can also test it using k8s/ocp and a pod managed by a supervisord
+```bash
+oc delete  -f ./sandbox/pod-hal.yml
+oc apply  -f ./sandbox/pod-hal.yml
+
+kubectl cp pom.xml hal:/usr/src -n test
+kubectl cp src hal:/usr/src -n test
+kubectl exec hal -n test /var/lib/supervisord/bin/supervisord ctl start build
 ```
