@@ -86,16 +86,15 @@ docker tag $TAG_ID quay.io/halkyonio/openjdk8-s2i
 docker push quay.io/halkyonio/spring-boot-s2i
 docker push quay.io/halkyonio/openjdk8-s2i
 ```
-## Maven repo
+## Maven Offline repo for Spring Boot
 
-The purpose of this image is to extend the Maven image, to package the GAVs of Spring Boot, Dekorate under the path `/tmp/artefacts`
-of the image in order to provide it as internal maven cache for java maven build when you use this option `-Dmaven.repo.local=/tmp/.m2`
+The purpose of this image is to extend the [Docker Maven JDK image](https://hub.docker.com/_/maven), to package the GAVs of Spring Boot 2.1.6, Dekorate 0.8.2
+under the path `/tmp/artefacts` of the image in order to provide it as an internal maven cache for java maven build when you use the option `-Dmaven.repo.local=/tmp/.m2`
 
 Example of multi-layers docker file able to use it 
 ```
 ## Stage 1 : build with maven builder image
-# FROM maven:3.5-jdk-8 AS build
-FROM quay.io/halkyonio/spring-boot-maven AS build
+FROM quay.io/halkyonio/spring-boot-offline-maven AS build
 COPY . /usr/src
 USER root
 
@@ -117,28 +116,17 @@ CMD ["./application"]
 
 To build/push it, use the following commands
 ```bash
-cd maven-repo
-docker build -t spring-boot-maven:latest .
+cd maven-offline-repo
+docker build -t spring-boot-offline-maven .
 TAG_ID=$(docker images -q spring-boot-maven:latest)
-docker tag $TAG_ID quay.io/halkyonio/spring-boot-maven
-docker push quay.io/halkyonio/spring-boot-maven
-```
-
-Alternate approach where we use `dependency:go-offline` to populate 
-the maven repo offline using a `pom.xml` file and package it within the image at `/tmp/artefacts`.
-
-```bash
-cd maven-repo
-docker build -t spring-boot-maven:snapshot -f DockerfileOffline .
-TAG_ID=$(docker images -q spring-boot-maven:snapshot)
-docker tag $TAG_ID quay.io/halkyonio/spring-boot-maven:snapshot
-docker push quay.io/halkyonio/spring-boot-maven:snapshot
+docker tag $TAG_ID quay.io/halkyonio/spring-boot-offline-maven
+docker push quay.io/halkyonio/spring-boot-offline-maven
 ```
 
 ## Hal Maven JDK8 image
 
-This image extends the maven jdk image `maven:3.6.2-jdk-8-slim`, includes a offline
-maven repo and needed bash scripts to perform: 
+This image extends the maven jdk image `maven:3.6.2-jdk-8-slim`, includes an [offline
+maven repo](maven-offline-repo) and needed bash scripts to perform: 
 
 - `mvn -f /usr/src/${CONTEXTPATH}/${MODULEDIRNAME}/pom.xml ${MAVEN_ARGS} package -Dmaven.repo.local=/tmp/artefacts`
 - `java -cp . -jar /usr/src/${CONTEXTPATH}/${MODULEDIRNAME}/target/*.jar`
