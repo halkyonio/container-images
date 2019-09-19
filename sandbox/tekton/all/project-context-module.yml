@@ -76,7 +76,7 @@ items:
     steps:
       - name: build
         image: quay.io/buildah/stable:v1.9.0
-        command: ['buildah', 'bud', '--build-arg', 'contextPath=.','--build-arg','moduleDirName=moduleA', '--tls-verify=${inputs.params.verifyTLS}', '--layers', '-f', '/Dockerfile', '-t', '${outputs.resources.image.url}', '.']
+        command: ['buildah', 'bud', '--build-arg', 'contextPath=demo','--build-arg','moduleDirName=moduleA', '--tls-verify=${inputs.params.verifyTLS}', '--layers', '-f', '/Dockerfile', '-t', '${outputs.resources.image.url}', '.']
         volumeMounts:
           - mountPath: /var/lib/containers
             name: libcontainers
@@ -116,7 +116,7 @@ items:
               - name: url
                 value: https://github.com/cmoulliard/rest-http-example.git
               - name: revision
-                value: module-a
+                value: context-module-a
     outputs:
       resources:
         - name: image

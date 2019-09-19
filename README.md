@@ -135,3 +135,25 @@ docker tag $TAG_ID quay.io/halkyonio/spring-boot-maven:snapshot
 docker push quay.io/halkyonio/spring-boot-maven:snapshot
 ```
 
+## Hal image
+
+This image extends the maven jdk image `maven:3.6.2-jdk-8-slim`, includes a offline
+maven repo and needed bash scripts to perform: 
+
+- `mvn -f /usr/src/${CONTEXTPATH}/${MODULEDIRNAME}/pom.xml package -Dmaven.repo.local=/tmp/artefacts`
+- `java -cp . -jar /usr/src/${CONTEXTPATH}/${MODULEDIRNAME}/target/*.jar`
+
+To build the image
+```bash
+cd hal
+docker build -t hal . 
+TAG_ID=$(docker images -q build)
+docker tag $TAG_ID quay.io/halkyonio/hal
+docker push quay.io/halkyonio/hal
+```
+
+To use it within an existing Spring Boot Maven project
+```bash
+docker run -it -v "$(pwd)":/usr/src -e CONTEXTPATH=. -e MODULEDIRNAME=. -e cmd=build hal
+docker run -it -v "$(pwd)":/usr/src -e CONTEXTPATH=. -e MODULEDIRNAME=. -e cmd=run hal
+```

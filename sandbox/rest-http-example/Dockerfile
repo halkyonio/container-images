@@ -3,8 +3,8 @@ FROM quay.io/halkyonio/spring-boot-maven:snapshot AS build
 COPY . /usr/src
 USER root
 
-ENV contexPath .
-ENV moduleDirName .
+ARG contextPath="."
+ARG moduleDirName="."
 
 RUN chown -R 1001:0 /usr/src
 RUN mvn -f /usr/src/${contexPath}/${moduleDirName}/pom.xml package -Dmaven.repo.local=/tmp/artefacts
@@ -14,8 +14,8 @@ FROM registry.access.redhat.com/redhat-openjdk-18/openjdk18-openshift
 
 USER root
 
-ENV contexPath .
-ENV moduleDirName .
+ARG contextPath="."
+ARG moduleDirName="."
 
 WORKDIR /work/
 COPY --from=build /usr/src/${contexPath}/${moduleDirName}/target/*.jar /deployments
