@@ -38,7 +38,7 @@ spec:
     - env:
         - name: CMDS
           value: >-
-            run:/usr/local/bin/run.sh:true;build:/usr/local/bin/build.sh:false
+            run:/usr/local/bin/run:true;build:/usr/local/bin/build:false
       image: 'quay.io/halkyonio/supervisord:latest'
       imagePullPolicy: Always
       name: copy-supervisord
