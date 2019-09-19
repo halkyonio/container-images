@@ -4,8 +4,8 @@
   <groupId>dev.snowdrop.example</groupId>
   <artifactId>rest-http</artifactId>
   <version>2.1.6</version>
-  <name>Spring Boot - Simple</name>
-  <description>Spring Boot - Simple</description>
+  <name>Spring Boot - Simple - 1</name>
+  <description>Spring Boot - Simple - 1</description>
   <properties>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
