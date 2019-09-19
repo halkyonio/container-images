@@ -151,7 +151,7 @@ ENV Vars available:
 
 To build the image
 ```bash
-cd hal
+cd hal-mvn-jdk
 docker build -t hal . 
 TAG_ID=$(docker images -q hal)
 docker tag $TAG_ID quay.io/halkyonio/hal-maven-jdk
