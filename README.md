@@ -118,7 +118,7 @@ To build/push it, use the following commands
 ```bash
 cd maven-offline-repo
 docker build -t spring-boot-offline-maven .
-TAG_ID=$(docker images -q spring-boot-maven:latest)
+TAG_ID=$(docker images -q spring-boot-offline-maven)
 docker tag $TAG_ID quay.io/halkyonio/spring-boot-offline-maven
 docker push quay.io/halkyonio/spring-boot-offline-maven
 ```
