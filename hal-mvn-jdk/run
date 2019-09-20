@@ -7,4 +7,4 @@ java -XX:+UseParallelOldGC \
      -XX:AdaptiveSizePolicyWeight=90 \
      -XX:MaxMetaspaceSize=100m \
      -XX:+ExitOnOutOfMemoryError \
-     -cp "." -jar /usr/src/${CONTEXTPATH}/${MODULEDIRNAME}/target/*.jar
+     -cp "." -jar /deployments/*.jar
