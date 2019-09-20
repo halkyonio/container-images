@@ -7,4 +7,4 @@ java -XX:+UseParallelOldGC \
      -XX:AdaptiveSizePolicyWeight=90 \
      -XX:MaxMetaspaceSize=100m \
      -XX:+ExitOnOutOfMemoryError \
-     -cp "." -jar /deployments/*.jar
+     -cp "." -jar /deployments/app.jar
