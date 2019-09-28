@@ -4,9 +4,7 @@ USER root
 
 ADD pom.xml pom.xml
 
-RUN mkdir -p /tmp/artefacts && \
-    chmod -R 777 /tmp/artefacts && \
-    chown -R 1001:0 /tmp/artefacts
+RUN mkdir -p /tmp/artefacts
 
 # Problem with the official maven plugin --> Not all maven plugins downloaded !!
 # RUN mvn dependency:go-offline -f pom.xml -Dmaven.repo.local=/tmp/artefacts
