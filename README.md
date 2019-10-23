@@ -126,16 +126,14 @@ docker push quay.io/halkyonio/spring-boot-offline-maven
 ## Hal Maven JDK8 image
 
 This image extends the maven jdk image `maven:3.6.2-jdk-8-slim`, keeps downloaded dependencies in `/tmp/artefacts` and uses 
-shell scripts to build and run maven java projects: 
-
-- `mvn -f /usr/src/${CONTEXTPATH}/${MODULEDIRNAME}/pom.xml ${MAVEN_ARGS} package -Dmaven.repo.local=/tmp/artefacts`
-- `java -cp . -jar /usr/src/${CONTEXTPATH}/${MODULEDIRNAME}/target/*.jar`
+shell scripts to [build](hal-mvn-jdk/build) and [run](hal-mvn-jdk/run) maven java projects: 
 
 ENV Vars available:
 
 - `CONTEXTPATH`: path to access the directory of the maven project
 - `MODULEDIRNAME`: Name of the maven module directory when your project is designed as a maven multi-modules structure
 - `MAVEN_ARGS`: arguments to pass to the Maven command (e.g. -X)
+- `JARPATTERN`: pattern (e.g. `*` or `*-runner`) allowing the build command to identify which jar is the executable binary
 
 To build the image
 ```bash
