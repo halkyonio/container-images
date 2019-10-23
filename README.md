@@ -125,8 +125,8 @@ docker push quay.io/halkyonio/spring-boot-offline-maven
 
 ## Hal Maven JDK8 image
 
-This image extends the maven jdk image `maven:3.6.2-jdk-8-slim`, includes an [offline
-maven repo](maven-offline-repo) and needed bash scripts to perform: 
+This image extends the maven jdk image `maven:3.6.2-jdk-8-slim`, keeps downloaded dependencies in `/tmp/artefacts` and uses 
+shell scripts to build and run maven java projects: 
 
 - `mvn -f /usr/src/${CONTEXTPATH}/${MODULEDIRNAME}/pom.xml ${MAVEN_ARGS} package -Dmaven.repo.local=/tmp/artefacts`
 - `java -cp . -jar /usr/src/${CONTEXTPATH}/${MODULEDIRNAME}/target/*.jar`

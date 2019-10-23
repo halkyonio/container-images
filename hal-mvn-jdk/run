@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 java -XX:+UseParallelOldGC \
      -XX:MinHeapFreeRatio=10 \

@@ -1,10 +1,8 @@
-FROM maven:3.6.2-jdk-8-slim
+FROM hal-maven-jdk
 
 USER root
 
 ADD pom.xml pom.xml
-
-RUN mkdir -p /tmp/artefacts
 
 # Problem with the official maven plugin --> Not all maven plugins downloaded !!
 # RUN mvn dependency:go-offline -f pom.xml -Dmaven.repo.local=/tmp/artefacts
