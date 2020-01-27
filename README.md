@@ -2,19 +2,19 @@
 
 ## Prerequisites
 
-Be logged with the Quay registry
+- Have a docker server accessible and a client installed
+- Be logged with the Quay registry
 ```bash
 docker login -u <user> -p <pwd> quay.io
 ```
 
-## Centos7 CircleCI image
+## List of images
 
-Project to build a Centos7 image able to run on CircleCI.
-```bash
-cd circleci
-docker build . -t quay.io/snowdrop/centos-circleci
-docker push quay.io/snowdrop/centos-circleci
-```
+  * [Supervisord image](#supervisord-image)
+  * [Hal Maven JDK8 image](#hal-maven-jdk8-image)
+  * [Maven Offline repo for Spring Boot](#maven-offline-repo-for-spring-boot)
+  * [OpenJDK S2I image](#openjdk-s2i-image)  
+  * [Spring Boot maven s2i image](#spring-boot-maven-s2i-image)  
 
 ## Spring Boot maven s2i image
 
@@ -159,4 +159,13 @@ oc apply -f ./sandbox/pod-hal.yml
 kubectl cp pom.xml hal:/usr/src -n test
 kubectl cp src hal:/usr/src -n test
 kubectl exec hal -n test /var/lib/supervisord/bin/supervisord ctl start build
+```
+
+## Centos7 CircleCI image
+
+Project to build a Centos7 image able to run on CircleCI.
+```bash
+cd circleci
+docker build . -t quay.io/snowdrop/centos-circleci
+docker push quay.io/snowdrop/centos-circleci
 ```
