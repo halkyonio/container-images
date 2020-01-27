@@ -1,4 +1,4 @@
-FROM hal-maven-jdk
+FROM quay.io/halkyonio/hal-maven-jdk
 
 USER root
 
