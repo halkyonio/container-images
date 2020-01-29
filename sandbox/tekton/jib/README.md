@@ -5,7 +5,7 @@
 - See : https://github.com/GoogleContainerTools/jib/issues/2106
 - Login in to quay.io
 ```bash
-docker login -u="cmoulliard+dabou" -p="DZ9U3UEO194G1D6JK1BSXGI4BPKSAXOG4MSJOBS0D5PLM354ELOAEL8P49GYPO2L" quay.io
+docker login -u="<USER>" -p="<PWD>" quay.io
 ```
 - Instructions
 ```bash
