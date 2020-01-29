@@ -25,19 +25,22 @@ spec:
       command:
         - mvn
         - compile
-        - com.google.cloud.tools:jib-maven-plugin:build
+        - com.google.cloud.tools:jib-maven-plugin:2.0.0:build
         - -Duser.home=/builder/home
+        - -Djib.from.image=registry.redhat.io/redhat-openjdk-18/openjdk18-openshift
         - -Djib.allowInsecureRegistries=true
-        - -Dimage=${outputs.resources.image.url}
+        - -Djib.from.auth.username=xxxxx
+        - -Djib.from.auth.password=yyyyyy
+        - -Dimage=$(outputs.resources.image.url)
       env:
       - name: "DOCKER_CONFIG"
         value: "/builder/home/.docker/"
-      workingDir: /workspace/source/${inputs.params.DIRECTORY}
+      workingDir: /workspace/source/$(inputs.params.DIRECTORY)
       volumeMounts:
-        - name: ${inputs.params.CACHE}
+        - name: $(inputs.params.CACHE)
           mountPath: /builder/home/.m2
           subPath: m2-cache
-        - name: ${inputs.params.CACHE}
+        - name: $(inputs.params.CACHE)
           mountPath: /builder/home/.cache
           subPath: jib-cache
 
