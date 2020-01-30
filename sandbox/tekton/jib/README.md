@@ -2,7 +2,7 @@
 
 ### Locally
 
-- See : https://github.com/GoogleContainerTools/jib/issues/2106
+- See this [ticket](https://github.com/GoogleContainerTools/jib/issues/2106)
 - Login in to quay.io
 ```bash
 docker login -u="<USER>" -p="<PWD>" quay.io
