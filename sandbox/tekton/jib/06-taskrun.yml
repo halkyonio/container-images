@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1alpha1
 kind: TaskRun
 metadata:
-  name: example-jib-maven
+  name: jib-maven
 spec:
   serviceAccountName: build-bot
   taskRef:
