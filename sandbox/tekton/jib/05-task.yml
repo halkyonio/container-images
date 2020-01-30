@@ -5,18 +5,15 @@ metadata:
 spec:
   inputs:
     params:
-      #- name: RH_USERNAME
-      #  description: The Red Hat username to be used to log on to the registry "registry.redhat.io"
-      #  default: .
-      #- name: RH_PASSWORD
-      #  description: The Red Hat username to be used to log on to the registry "registry.redhat.io"
-      #  default: .
       - name: DIRECTORY
         description: The directory containing the app, relative to the source repository root
         default: .
       - name: CACHE
         description: The name of the volume for caching Maven artifacts and base image layers
         default: m2-data
+      - name: JIB_VERSION
+        description: Maven JB version to be used to build the container images
+        default: 2.0.0
     resources:
       - name: source
         type: git
@@ -31,7 +28,7 @@ spec:
       command:
         - mvn
         - compile
-        - com.google.cloud.tools:jib-maven-plugin:2.0.0:build
+        - com.google.cloud.tools:jib-maven-plugin:$(JIB_VERSION):build
         - -DsendCredentialsOverHttp=true
         - -Duser.home=/builder/home
         - -Djib.from.image=registry.redhat.io/redhat-openjdk-18/openjdk18-openshift
