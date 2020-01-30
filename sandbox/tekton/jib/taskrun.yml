@@ -3,6 +3,7 @@ kind: TaskRun
 metadata:
   name: example-jib-maven
 spec:
+  serviceAccountName: build-bot
   taskRef:
     name: jib-maven
   inputs:
@@ -15,7 +16,9 @@ spec:
           type: git
           params:
             - name: url
-              value: https://github.com/snowdrop/rest-http-example.git
+              value: https://github.com/cmoulliard/rest-http-example.git
+            - name: revision
+              value: jib-logging
   outputs:
     resources:
       - name: image
