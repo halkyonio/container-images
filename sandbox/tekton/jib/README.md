@@ -18,15 +18,18 @@ mvn compile com.google.cloud.tools:jib-maven-plugin:2.0.0:build \
    -Djib.from.auth.password=<RED_HAT_PWD>
 ```
 
-### Using Tekton
+### Using Tekton and JIB
+
+Before to use Tekton and JIB, be sure that the serviceaccount that it will use has been granted with the following
+cluster role `rwgistry-editor`. See [doc link](https://docs.openshift.com/container-platform/3.11/install_config/registry/accessing_registry.html#access-user-prerequisites)
 
 - To create the resources
 ```bash
 oc new-project test
-kc apply -f tekton/jib
+oc apply -f tekton/jib
 ```
 
 - To clean up
 ```bash
-kc delete task,taskrun,pipelineresource --all
+oc delete task,taskrun,pipelineresource,sa,role,rolebinding --all
 ```

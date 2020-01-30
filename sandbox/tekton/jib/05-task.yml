@@ -5,6 +5,12 @@ metadata:
 spec:
   inputs:
     params:
+      - name: RH_USERNAME
+        description: The Red Hat username to be used to log on to the registry "registry.redhat.io"
+        default: .
+      - name: RH_PASSWORD
+        description: The Red Hat username to be used to log on to the registry "registry.redhat.io"
+        default: .
       - name: DIRECTORY
         description: The directory containing the app, relative to the source repository root
         default: .
@@ -30,11 +36,11 @@ spec:
         - -Duser.home=/builder/home
         - -Djib.from.image=registry.redhat.io/redhat-openjdk-18/openjdk18-openshift
         - -Djib.allowInsecureRegistries=true
-        - -Djava.util.logging.config.file=src/main/resources/jib-log.properties
-        - -Djib.serialize=true
-        - -Djib.console=plain
-        - -Djib.from.auth.username=xxxx
-        - -Djib.from.auth.password=yyyyy
+        #- -Djava.util.logging.config.file=src/main/resources/jib-log.properties
+        #- -Djib.serialize=true
+        #- -Djib.console=plain
+        - -Djib.from.auth.username=$(inputs.params.RH_USERNAME)
+        - -Djib.from.auth.password=$(inputs.params.RH_PASSWORD)
         - -Dimage=$(outputs.resources.image.url)
       env:
       - name: "DOCKER_CONFIG"
