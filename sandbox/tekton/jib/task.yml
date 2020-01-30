@@ -10,7 +10,7 @@ spec:
         default: .
       - name: CACHE
         description: The name of the volume for caching Maven artifacts and base image layers
-        default: m2-sb
+        default: m2-data
     resources:
       - name: source
         type: git
@@ -26,11 +26,15 @@ spec:
         - mvn
         - compile
         - com.google.cloud.tools:jib-maven-plugin:2.0.0:build
+        - -DsendCredentialsOverHttp=true
         - -Duser.home=/builder/home
         - -Djib.from.image=registry.redhat.io/redhat-openjdk-18/openjdk18-openshift
         - -Djib.allowInsecureRegistries=true
-        - -Djib.from.auth.username=xxxxx
-        - -Djib.from.auth.password=yyyyyy
+        - -Djava.util.logging.config.file=src/main/resources/jib-log.properties
+        - -Djib.serialize=true
+        - -Djib.console=plain
+        - -Djib.from.auth.username=xxxx
+        - -Djib.from.auth.password=yyyyy
         - -Dimage=$(outputs.resources.image.url)
       env:
       - name: "DOCKER_CONFIG"
@@ -45,6 +49,6 @@ spec:
           subPath: jib-cache
 
   volumes:
-  - name: m2-sb
+  - name: m2-data
     persistentVolumeClaim:
-      claimName: m2-sb
+      claimName: m2-data
