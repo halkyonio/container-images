@@ -7,13 +7,12 @@ spec:
     params:
       - name: DIRECTORY
         description: The directory containing the app, relative to the source repository root
-        default: .
       - name: CACHE
         description: The name of the volume for caching Maven artifacts and base image layers
-        default: m2-data
       - name: JIB_VERSION
         description: Maven JB version to be used to build the container images
-        default: 2.0.0
+      - name: FROM_IMAGE
+        description: Input image to be used to build the target image
     resources:
       - name: source
         type: git
@@ -28,10 +27,10 @@ spec:
       command:
         - mvn
         - compile
-        - com.google.cloud.tools:jib-maven-plugin:$(JIB_VERSION):build
+        - com.google.cloud.tools:jib-maven-plugin:$(inputs.params.JIB_VERSION):build
         - -DsendCredentialsOverHttp=true
         - -Duser.home=/builder/home
-        - -Djib.from.image=registry.redhat.io/redhat-openjdk-18/openjdk18-openshift
+        - -Djib.from.image=$(inputs.params.FROM_IMAGE)
         - -Djib.allowInsecureRegistries=true
         #- -Djava.util.logging.config.file=src/main/resources/jib-log.properties
         #- -Djib.serialize=true

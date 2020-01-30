@@ -10,6 +10,12 @@ spec:
     params:
       - name: DIRECTORY
         value: .
+      - name: CACHE
+        value: m2-data
+      - name: FROM_IMAGE
+        value: registry.redhat.io/redhat-openjdk-18/openjdk18-openshift
+      - name: JIB_VERSION
+        value: "2.0.0"
     resources:
       - name: source
         resourceSpec:
@@ -22,5 +28,8 @@ spec:
   outputs:
     resources:
       - name: image
-        resourceRef:
-          name: sb
+        resourceSpec:
+          type: image
+          params:
+            - name: url
+              value: docker-registry.default.svc:5000/test/sb
