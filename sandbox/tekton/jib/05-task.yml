@@ -5,12 +5,12 @@ metadata:
 spec:
   inputs:
     params:
-      - name: RH_USERNAME
-        description: The Red Hat username to be used to log on to the registry "registry.redhat.io"
-        default: .
-      - name: RH_PASSWORD
-        description: The Red Hat username to be used to log on to the registry "registry.redhat.io"
-        default: .
+      #- name: RH_USERNAME
+      #  description: The Red Hat username to be used to log on to the registry "registry.redhat.io"
+      #  default: .
+      #- name: RH_PASSWORD
+      #  description: The Red Hat username to be used to log on to the registry "registry.redhat.io"
+      #  default: .
       - name: DIRECTORY
         description: The directory containing the app, relative to the source repository root
         default: .
@@ -39,12 +39,22 @@ spec:
         #- -Djava.util.logging.config.file=src/main/resources/jib-log.properties
         #- -Djib.serialize=true
         #- -Djib.console=plain
-        - -Djib.from.auth.username=$(inputs.params.RH_USERNAME)
-        - -Djib.from.auth.password=$(inputs.params.RH_PASSWORD)
+        - -Djib.from.auth.username=$(RH_USERNAME)
+        - -Djib.from.auth.password=$(RH_PASSWORD)
         - -Dimage=$(outputs.resources.image.url)
       env:
       - name: "DOCKER_CONFIG"
         value: "/builder/home/.docker/"
+      - name: "RH_USERNAME"
+        valueFrom:
+          secretKeyRef:
+            name: rh-account
+            key: RH_USERNAME
+      - name: "RH_PASSWORD"
+        valueFrom:
+          secretKeyRef:
+            name: rh-account
+            key: RH_PASSWORD
       workingDir: /workspace/source/$(inputs.params.DIRECTORY)
       volumeMounts:
         - name: $(inputs.params.CACHE)
@@ -53,7 +63,6 @@ spec:
         - name: $(inputs.params.CACHE)
           mountPath: /builder/home/.cache
           subPath: jib-cache
-
   volumes:
   - name: m2-data
     persistentVolumeClaim:
