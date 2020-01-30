@@ -14,8 +14,6 @@ spec:
         value: m2-data
       - name: FROM_IMAGE
         value: registry.redhat.io/redhat-openjdk-18/openjdk18-openshift
-      - name: JIB_VERSION
-        value: "2.0.0"
     resources:
       - name: source
         resourceSpec:
