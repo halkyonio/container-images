@@ -20,9 +20,14 @@ spec:
         type: image
   steps:
     - name: build
-      image: quay.io/buildah/stable:v1.9.0
+      image: quay.io/buildah/stable:v1.12.0
       # '-v',  '/tmp/artefacts:/tmp/artefacts:rw'
-      command: ['buildah', 'bud', '--tls-verify=${inputs.params.verifyTLS}', '--layers', '-f', '/Dockerfile', '-t', '${outputs.resources.image.url}', '.']
+      command: ['buildah', '--log-level=debug', 'bud', '--tls-verify=$(inputs.params.verifyTLS)', '--layers', '-f', '/Dockerfile', '-t', '$(outputs.resources.image.url)', '.']
+      env:
+        - name: contexPath
+          value: .
+        - name: moduleDirName
+          value: .
       volumeMounts:
       - mountPath: /var/lib/containers
         name: libcontainers
@@ -33,8 +38,8 @@ spec:
         privileged: true
 
     - name: push
-      image: quay.io/buildah/stable:v1.9.0
-      command: ['buildah', 'push', '--tls-verify=${inputs.params.verifyTLS}', '${outputs.resources.image.url}', 'docker://${outputs.resources.image.url}']
+      image: quay.io/buildah/stable:v1.12.0
+      command: ['buildah', '--log-level=debug', 'push', '--tls-verify=$(inputs.params.verifyTLS)', '$(outputs.resources.image.url)', 'docker://$(outputs.resources.image.url)']
       env:
       - name: REGISTRY_AUTH_FILE
         value: /builder/home/.docker/config.json

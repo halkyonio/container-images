@@ -3,7 +3,7 @@ kind: TaskRun
 metadata:
   name: buildah
 spec:
-  serviceAccount: build-bot
+  serviceAccountName: build-bot
   taskRef:
     name: buildah
   inputs:
