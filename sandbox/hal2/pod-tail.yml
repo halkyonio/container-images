@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    app: hal
+  name: hal
+spec:
+  containers:
+  - command: ["tail", "-f", "/dev/null"]
+    # image: maven:3.6.2-jdk-8-slim
+    image: 172.30.1.1:5000/test/ubi11
+    imagePullPolicy: Always
+    name: sb
+    ports:
+    - containerPort: 8080
+      name: http
+      protocol: TCP
+    volumeMounts:
+      - name: m2-data
+        mountPath: /home/jboss/.m2
+        subPath: m2-cache
+      - name: m2-data
+        mountPath: /builder/home/.cache
+        subPath: jib-cache
+  volumes:
+    - name: m2-data
+      persistentVolumeClaim:
+        claimName: m2-data

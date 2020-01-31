@@ -3,3 +3,4 @@
 dist/
 .DS_Store
 ./sandbox/rest-http-example/
+sandbox/hal2/quarkus-demo/
