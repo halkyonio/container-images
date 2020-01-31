@@ -22,13 +22,17 @@ docker push 172.30.1.1:5000/test/ubi11
 
 ## Instructions
 
+- Git clone locally the quarkus demo project
+```bash
+git clone https://github.com/cmoulliard/quarkus-demo.git
+```
 - Create the Dev's pod within the namespace `test` and expose the pod as service, route
 ```bash
 kubectl apply -f deploy/
 ```
-- To rsync the files to the pod. Pass the name of the pod as parameter
+- To rsync the files to the pod, execute the following command and pass the pod name and project containing the code source (resolved locally) as parameters
 ```bash
-./krsync quarkus
+./krsync quarkus quarkus-demo
 ```
 - Next, compile the project imported
 ```bash

@@ -2,15 +2,7 @@
 
 USER=jboss
 POD_NAME=${1:-quarkus}
+SOURCE_CODE=${2:-quarkus-demo}
 DIR=$(dirname "$0")
 
-#appName=${1:-hal}
-#namespace=${2:-test}
-#pod=$(kubectl get pod -lapp=${appName} -n ${namespace} | grep "Running" | awk '{print $1}')
-
-p_user=$USER
-p_name=$POD_NAME
-
-rsync -avurP --blocking-io --rsync-path= --rsh="$(which kubectl) exec $p_name -i -- " $DIR/quarkus-demo rsync:/home/$p_user/
-
-#kubectl exec $pod_id -n ${namespace}
+rsync -avurP --blocking-io --rsync-path= --rsh="$(which kubectl) exec $POD_NAME -i -- " $DIR/$SOURCE_CODE rsync:/home/$USER/
