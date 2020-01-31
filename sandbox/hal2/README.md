@@ -30,18 +30,28 @@ git clone https://github.com/cmoulliard/quarkus-demo.git
 ```bash
 kubectl apply -f deploy/
 ```
+
 - To rsync the files to the pod, execute the following command and pass the pod name and project containing the code source (resolved locally) as parameters
 ```bash
 ./krsync quarkus quarkus-demo
 ```
+
+- Find the pod id to execute the following command
+```bash
+POD_NAME=quarkus
+NAMESPACE=test
+POD_ID=$(kubectl get pod -lapp=${POD_NAME} -n ${NAMESPACE} | grep "Running" | awk '{print $1}')
+echo $POD_ID
+```
+
 - Next, compile the project imported
 ```bash
-kc exec quarkus -i -t -- mvn package -DskipTests=true -f /home/jboss/quarkus-demo/pom.xml -Dmaven.local.repo=/home/jboss/.m2/repository
+kc exec $POD_ID -i -t -- mvn package -DskipTests=true -f /home/jboss/quarkus-demo/pom.xml -Dmaven.local.repo=/home/jboss/.m2/repository
 ```
 
 - Finally, launch it 
 ```bash
-kc exec quarkus -i -t -- java -jar /home/jboss/quarkus-demo/target/quarkus-rest-1.0-SNAPSHOT-runner.jar
+kc exec $POD_ID -i -t -- java -jar /home/jboss/quarkus-demo/target/quarkus-rest-1.0-SNAPSHOT-runner.jar
 2020-01-31 12:27:17,134 INFO  [io.quarkus] (main) quarkus-rest 1.0-SNAPSHOT (running on Quarkus 1.2.0.Final) started in 1.821s. Listening on: http://0.0.0.0:8080
 2020-01-31 12:27:17,203 INFO  [io.quarkus] (main) Profile prod activated. 
 2020-01-31 12:27:17,203 INFO  [io.quarkus] (main) Installed features: [cdi, resteasy]
@@ -58,7 +68,13 @@ Set-Cookie: b5b6e51386626d99db980a9be0a0bf0d=82691379466e8dcaa71f93f639063f7d; p
 
 Good evening,charles
 ```
+
+- To build the container image using JIB Tool
+```bash
+kc exec $POD_ID -i -t -- mvn -f /home/jboss/quarkus-demo/pom.xml compile com.google.cloud.tools:jib-maven-plugin:2.0.0:build -Djib.from.image=registry.redhat.io/redhat-openjdk-18/openjdk18-openshift -Dimage=172.30.1.1:5000/test/quarkus-demo -Djib.from.auth.username=yyyy -Djib.from.auth.password=xxxx -Djib.container.mainClass=dev.snowdrop.HelloApplication -DsendCredentialsOverHttp=true -Djib.allowInsecureRegistries=true -Djava.util.logging.config.file=src/main/resources/jib-log.properties -Djib.serialize=true -Djib.console=plain
+```
+
 - To clean
 ```bash
-kc delete svc,route,pod -n test --all
+kc delete svc,route,deployment,rolebinding,sa -n test --all
 ```
