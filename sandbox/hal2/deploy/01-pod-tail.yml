@@ -2,15 +2,14 @@ apiVersion: v1
 kind: Pod
 metadata:
   labels:
-    app: hal
-  name: hal
+    app: quarkus
+  name: quarkus
 spec:
   containers:
   - command: ["tail", "-f", "/dev/null"]
-    # image: maven:3.6.2-jdk-8-slim
     image: 172.30.1.1:5000/test/ubi11
     imagePullPolicy: Always
-    name: sb
+    name: quarkus
     ports:
     - containerPort: 8080
       name: http

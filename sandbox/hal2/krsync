@@ -1,7 +1,7 @@
 #!/bin/bash
 
 USER=jboss
-POD_NAME=hal
+POD_NAME=${1:-quarkus}
 DIR=$(dirname "$0")
 
 #appName=${1:-hal}
