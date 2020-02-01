@@ -15,7 +15,9 @@ spec:
       name: quarkus
     spec:
       initContainers:
-      - args:
+      - # Convert the old docker config file into the new one only supported by JIB
+        # .dockercfg -> config.json
+        args:
         - '-docker-cfg=build-bot-dockercfg-rwdnx'
         command:
         - /ko-app/creds-init
@@ -29,7 +31,9 @@ spec:
             name: tekton-home
           - mountPath: /var/build-secrets/build-bot-dockercfg-rwdnx
             name: docker-cfg
-      - command: ["/bin/sh"]
+      - # Copy the file to the destination that JIB will use to be authenticated
+        # with the internal docker registry
+        command: ["/bin/sh"]
         args: ["-c", "cp /tekton/home/.docker/config.json /home/jboss/.docker/config.json"]
         image: 172.30.1.1:5000/test/ubi11
         name: copy-docker-config
