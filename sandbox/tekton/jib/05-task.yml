@@ -42,7 +42,7 @@ spec:
       - name: JIB_VERSION
         valueFrom:
           ConfigMapKeyRef:
-            name: jib-config
+            name: jib-cfg
             key: JIB_VERSION
       - name: "RH_USERNAME"
         valueFrom:
