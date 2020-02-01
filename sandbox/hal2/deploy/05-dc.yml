@@ -14,6 +14,30 @@ spec:
         app: quarkus
       name: quarkus
     spec:
+      initContainers:
+      - args:
+        - '-docker-cfg=build-bot-dockercfg-rwdnx'
+        command:
+        - /ko-app/creds-init
+        env:
+          - name: HOME
+            value: /tekton/home
+        image: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/creds-init:v0.9.1
+        name: credential-initializer
+        volumeMounts:
+          - mountPath: /tekton/home
+            name: tekton-home
+          - mountPath: /var/build-secrets/build-bot-dockercfg-rwdnx
+            name: docker-cfg
+      - command: ["/bin/sh"]
+        args: ["-c", "cp /tekton/home/.docker/config.json /home/jboss/.docker/config.json"]
+        image: 172.30.1.1:5000/test/ubi11
+        name: copy-docker-config
+        volumeMounts:
+          - mountPath: /tekton/home
+            name: tekton-home
+          - mountPath: /home/jboss/.docker
+            name: jboss-home
       containers:
       - command: ["tail", "-f", "/dev/null"]
         image: 172.30.1.1:5000/test/ubi11
@@ -23,22 +47,28 @@ spec:
             name: http
             protocol: TCP
         env:
-          - name: "DOCKER_CONFIG"
-            value: "/home/jboss/.docker/"
+        - name: "DOCKER_CONFIG"
+          value: "/home/jboss/.docker/"
         volumeMounts:
+          - name: tekton-home
+            mountPath: /tekton/home
+          - name: jboss-home
+            mountPath: /home/jboss/.docker
           - name: m2-data
             mountPath: /home/jboss/.m2
             subPath: m2-cache
           - name: m2-data
             mountPath: /builder/home/.cache
             subPath: jib-cache
-          - name: docker-cfg
-            mountPath: "/home/jboss/.docker"
       serviceAccountName: build-bot
       volumes:
+      - emptyDir: {}
+        name: tekton-home
+      - emptyDir: {}
+        name: jboss-home
       - name: m2-data
         persistentVolumeClaim:
           claimName: m2-data
       - name: docker-cfg
         secret:
-          secretName: docker-cfg
+          secretName: build-bot-dockercfg-rwdnx

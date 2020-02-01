@@ -71,10 +71,21 @@ Good evening,charles
 
 - To build the container image using JIB Tool
 ```bash
-kc exec $POD_ID -i -t -- mvn -f /home/jboss/quarkus-demo/pom.xml compile com.google.cloud.tools:jib-maven-plugin:2.0.0:build -Djib.from.image=registry.redhat.io/redhat-openjdk-18/openjdk18-openshift -Dimage=172.30.1.1:5000/test/quarkus-demo -Djib.from.auth.username=yyyy -Djib.from.auth.password=xxxx -Djib.container.mainClass=dev.snowdrop.HelloApplication -DsendCredentialsOverHttp=true -Djib.allowInsecureRegistries=true -Djava.util.logging.config.file=src/main/resources/jib-log.properties -Djib.serialize=true -Djib.console=plain
+kc exec $POD_ID -i -t -- mvn -f /home/jboss/quarkus-demo/pom.xml compile com.google.cloud.tools:jib-maven-plugin:2.0.0:build -Djib.from.image=registry.redhat.io/redhat-openjdk-18/openjdk18-openshift -Dimage=172.30.1.1:5000/test/quarkus-demo -Djib.from.auth.username=yyyy -Djib.from.auth.password=xxxx -Djib.container.mainClass=dev.snowdrop.HelloApplication -DsendCredentialsOverHttp=true -Djib.allowInsecureRegistries=true -Duser.home=/home/jboss 
+# -Djava.util.logging.config.file=src/main/resources/jib-log.properties -Djib.serialize=true -Djib.console=plain
 ```
 
 - To clean
 ```bash
 kc delete svc,route,deployment,rolebinding,sa -n test --all
+```
+
+## Not needed
+
+- Create the secret for the credentials of the docker registry. 
+  **NOTE**: That will not work for the serviceAccount, docker as the cluster creates a user/pwd and secret OOTB which
+  is then mounted to the pod.
+```bash
+kc delete secret regcred
+kc create secret generic regcred --from-file=config.json=config.json --type=kubernetes.io/dockerconfigjson
 ```
