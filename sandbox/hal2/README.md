@@ -23,25 +23,25 @@ The goal of this project is to :
 ### Import the UBI image
 
 - Fetch from brew the tar file, scp the file within the vm and import it within the ocp docker registry
-```bash
-tarName=ubi8-openjdk-11-15273-20200124145654.tar.xz
-wget http://file.rdu.redhat.com/~jdowland/ubi8.2/$tarName
-
-scp ubi8-openjdk-11-15273-20200124145654.tar.xz -i ~/.ssh/id_hetzner_snowdrop root@88.99.12.170:/tmp
-
-ssh -i ~/.ssh/id_hetzner_snowdrop root@88.99.12.170
-docker load -i $tarName
-```
-- Log on to the OpenShift cluster and next do the same with the internal docker registry
-```bash
-oc login https://88.99.12.170:8443 --token=<USER_TOKEN>
-docker login -u openshift -p $(oc whoami -t) 172.30.1.1:5000
-```
+  ```bash
+  tarName=ubi8-openjdk-11-15273-20200124145654.tar.xz
+  wget http://file.rdu.redhat.com/~jdowland/ubi8.2/$tarName
+  
+  scp ubi8-openjdk-11-15273-20200124145654.tar.xz -i ~/.ssh/id_hetzner_snowdrop root@88.99.12.170:/tmp
+  
+  ssh -i ~/.ssh/id_hetzner_snowdrop root@88.99.12.170
+  docker load -i $tarName
+  ```
+  - Log on to the OpenShift cluster and next do the same with the internal docker registry
+  ```bash
+  oc login https://88.99.12.170:8443 --token=<USER_TOKEN>
+  docker login -u openshift -p $(oc whoami -t) 172.30.1.1:5000
+  ```
 - Next tag the image imported (to be able to use it within a namespace) and push it
-```bash
-docker tag de3aac14333f 172.30.1.1:5000/test/ubi11
-docker push 172.30.1.1:5000/test/ubi11
-```
+  ```bash
+  docker tag de3aac14333f 172.30.1.1:5000/test/ubi11
+  docker push 172.30.1.1:5000/test/ubi11
+  ```
 
 ### Instructions to create a Developer's pod
 
@@ -133,6 +133,7 @@ docker push 172.30.1.1:5000/test/ubi11
   toImage=172.30.1.1:5000/test/quarkus-demo
   kubectl exec $POD_ID -i -t -- mvn -f /home/jboss/quarkus-demo/pom.xml package \
      com.google.cloud.tools:jib-maven-plugin:2.0.0:build \
+     -Dmaven.local.repo=/home/jboss/.m2/repository \
      -Djib.from.image=$fromImage \
      -Dimage=$toImage \
      -Djib.container.mainClass=dev.snowdrop.HelloApplication \
