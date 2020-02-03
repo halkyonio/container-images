@@ -5,7 +5,7 @@ The goal of this project is to :
 - To create a Developer pod where the user can next :
   - Push their development project
   - Execute a command remotely 
-- Can perform a build of the image using the JBI tool
+- Can perform a build of the image using the JIB tool
 
 ## Table of Contents
 
