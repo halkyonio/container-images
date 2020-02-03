@@ -15,7 +15,7 @@ The goal of this project is to :
      * [Push the code](#push-the-code)
      * [Compile](#compile)
   * [Outerloop](#outerloop)
-     * [Create a container image](#create-a-container-image)
+      * [Build the container image using JIB](#build-the-container-image-using-jib)
   * [To clean the resources created](#to-clean-the-resources-created)
 
 ## Innerloop
@@ -98,7 +98,7 @@ Good evening,charles
 
 ## Outerloop
 
-### Create a container image
+### Build the container image using JIB
 - To build the container image using JIB Tool
 ```bash
 kubectl exec $POD_ID -i -t -- mvn -f /home/jboss/quarkus-demo/pom.xml compile com.google.cloud.tools:jib-maven-plugin:2.0.0:build -Djib.from.image=registry.redhat.io/redhat-openjdk-18/openjdk18-openshift -Dimage=172.30.1.1:5000/test/quarkus-demo -Djib.from.auth.username=yyyy -Djib.from.auth.password=xxxx -Djib.container.mainClass=dev.snowdrop.HelloApplication -DsendCredentialsOverHttp=true -Djib.allowInsecureRegistries=true -Duser.home=/home/jboss 
