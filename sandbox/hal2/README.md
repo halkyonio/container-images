@@ -1,4 +1,26 @@
-## UBI image
+# Developer experience using UBI & JBI
+
+The goal of this project is to :
+- Investigate how we could use the new Red Hat UBI images for OpenJDK8, 11
+- To create a Developer pod where the user can next :
+  - Push their development project
+  - Execute a command remotely 
+- Can perform a build of the image using the JBI tool
+
+## Table of Contents
+
+  * [Innerloop](#innerloop)
+     * [Import the UBI image](#import-the-ubi-image)
+     * [Instructions to create a Developer's pod](#instructions-to-create-a-developers-pod)
+     * [Push the code](#push-the-code)
+     * [Compile](#compile)
+  * [Outerloop](#outerloop)
+     * [Create a container image](#create-a-container-image)
+  * [To clean the resources created](#to-clean-the-resources-created)
+
+## Innerloop
+
+### Import the UBI image
 
 - Fetch from brew the tar file, scp the file within the vm and import it within the ocp docker registry
 ```bash
@@ -10,17 +32,18 @@ scp ubi8-openjdk-11-15273-20200124145654.tar.xz -i ~/.ssh/id_hetzner_snowdrop ro
 ssh -i ~/.ssh/id_hetzner_snowdrop root@88.99.12.170
 docker load -i $tarName
 ```
-- Log on to the internal docker registry
+- Log on to the OpenShift cluster and next do the same with the internal docker registry
 ```bash
+oc login https://88.99.12.170:8443 --token=<USER_TOKEN>
 docker login -u openshift -p $(oc whoami -t) 172.30.1.1:5000
 ```
-- Next tag it to be able to use it within a namespace and push it
+- Next tag the image imported (to be able to use it within a namespace) and push it
 ```bash
 docker tag de3aac14333f 172.30.1.1:5000/test/ubi11
 docker push 172.30.1.1:5000/test/ubi11
 ```
 
-## Instructions
+### Instructions to create a Developer's pod
 
 - Git clone locally the quarkus demo project
 ```bash
@@ -31,10 +54,14 @@ git clone https://github.com/cmoulliard/quarkus-demo.git
 kubectl apply -f deploy/
 ```
 
+### Push the code
+
 - To rsync the files to the pod, execute the following command and pass the pod name and project containing the code source (resolved locally) as parameters
 ```bash
 ./krsync quarkus quarkus-demo
 ```
+
+### Compile 
 
 - Find the pod id to execute the following command
 ```bash
@@ -46,12 +73,12 @@ echo $POD_ID
 
 - Next, compile the project imported
 ```bash
-kc exec $POD_ID -i -t -- mvn package -DskipTests=true -f /home/jboss/quarkus-demo/pom.xml -Dmaven.local.repo=/home/jboss/.m2/repository
+kubectl exec $POD_ID -i -t -- mvn package -DskipTests=true -f /home/jboss/quarkus-demo/pom.xml -Dmaven.local.repo=/home/jboss/.m2/repository
 ```
 
 - Finally, launch it 
 ```bash
-kc exec $POD_ID -i -t -- java -jar /home/jboss/quarkus-demo/target/quarkus-rest-1.0-SNAPSHOT-runner.jar
+kubectl exec $POD_ID -i -t -- java -jar /home/jboss/quarkus-demo/target/quarkus-rest-1.0-SNAPSHOT-runner.jar
 2020-01-31 12:27:17,134 INFO  [io.quarkus] (main) quarkus-rest 1.0-SNAPSHOT (running on Quarkus 1.2.0.Final) started in 1.821s. Listening on: http://0.0.0.0:8080
 2020-01-31 12:27:17,203 INFO  [io.quarkus] (main) Profile prod activated. 
 2020-01-31 12:27:17,203 INFO  [io.quarkus] (main) Installed features: [cdi, resteasy]
@@ -69,23 +96,18 @@ Set-Cookie: b5b6e51386626d99db980a9be0a0bf0d=82691379466e8dcaa71f93f639063f7d; p
 Good evening,charles
 ```
 
+## Outerloop
+
+### Create a container image
 - To build the container image using JIB Tool
 ```bash
-kc exec $POD_ID -i -t -- mvn -f /home/jboss/quarkus-demo/pom.xml compile com.google.cloud.tools:jib-maven-plugin:2.0.0:build -Djib.from.image=registry.redhat.io/redhat-openjdk-18/openjdk18-openshift -Dimage=172.30.1.1:5000/test/quarkus-demo -Djib.from.auth.username=yyyy -Djib.from.auth.password=xxxx -Djib.container.mainClass=dev.snowdrop.HelloApplication -DsendCredentialsOverHttp=true -Djib.allowInsecureRegistries=true -Duser.home=/home/jboss 
+kubectl exec $POD_ID -i -t -- mvn -f /home/jboss/quarkus-demo/pom.xml compile com.google.cloud.tools:jib-maven-plugin:2.0.0:build -Djib.from.image=registry.redhat.io/redhat-openjdk-18/openjdk18-openshift -Dimage=172.30.1.1:5000/test/quarkus-demo -Djib.from.auth.username=yyyy -Djib.from.auth.password=xxxx -Djib.container.mainClass=dev.snowdrop.HelloApplication -DsendCredentialsOverHttp=true -Djib.allowInsecureRegistries=true -Duser.home=/home/jboss 
 # -Djava.util.logging.config.file=src/main/resources/jib-log.properties -Djib.serialize=true -Djib.console=plain
 ```
 
-- To clean
+## To clean the resources created
+
 ```bash
-kc delete svc,route,deployment,rolebinding,sa -n test --all
+kubectl delete svc,route,deployment,rolebinding,sa -n test --all
 ```
 
-## Not needed
-
-- Create the secret for the credentials of the docker registry. 
-  **NOTE**: That will not work for the serviceAccount, docker as the cluster creates a user/pwd and secret OOTB which
-  is then mounted to the pod.
-```bash
-kc delete secret regcred
-kc create secret generic regcred --from-file=config.json=config.json --type=kubernetes.io/dockerconfigjson
-```
