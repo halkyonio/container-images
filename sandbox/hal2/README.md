@@ -138,7 +138,9 @@ The goal of this project is to :
      -Dmaven.local.repo=/home/jboss/.m2/repository \
      -Djib.from.image=$fromImage \
      -Dimage=$toImage \
-     -Djib.container.mainClass=dev.snowdrop.HelloApplication \
+     -Djib.container.mainClass=io.quarkus.runner.GeneratedMain \
+     -Djib.containerizingMode=packaged \
+     -Dquarkus.package.uber-jar=true \
      -DsendCredentialsOverHttp=true \
      -Djib.allowInsecureRegistries=true \
      -Duser.home=/home/jboss 
