@@ -52,8 +52,10 @@ The goal of this project is to :
 - Get the name of the secret created and containing the `.dockercfg` data as we need it to configure the Deployment yml file
   ```bash
   secretName=$(kubectl get secrets -o name | grep build-bot-docker | cut -d '/' -f 2)
-  sed -i'.original' -e "s/SECRET_NAME/$secretName/g" deploy/05-dc.yml
+  sed -i'.original' -e "s/SECRET_NAME/$secretName/g" deploy/05-dc-a.yml
   ```
+  **REMARK**: As soon as JIB maven 2.0.1 is released, then it is not needed anymore to create the `config.json` docker file from the old format as JIB will be able to read old docker format. Then you can use the `05-dc-b.yml` deployment
+  
 - Next, create a Dev's pod within the namespace `test` using the following resources.
   ```bash
   kubectl apply -f deploy/02-rolebinding-registryeditor.yml
