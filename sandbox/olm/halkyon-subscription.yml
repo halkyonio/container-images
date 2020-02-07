@@ -1,0 +1,11 @@
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: halkyon
+  namespace: operators
+spec:
+  channel: alpha
+  installPlanApproval: Automatic
+  name: halkyon
+  source: halkyon.v0.1.9
+  sourceNamespace: marketplace

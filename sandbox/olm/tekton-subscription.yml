@@ -1,0 +1,11 @@
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: tekton
+  namespace: operators
+spec:
+  channel: dev-preview
+  installPlanApproval: Automatic
+  name: tekton
+  source: openshift-pipelines-operator.v0.9.1
+  sourceNamespace: marketplace
