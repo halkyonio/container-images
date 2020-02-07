@@ -6,9 +6,9 @@ metadata:
   namespace: marketplace
 spec:
   channel: canary
-  #startingCsv: openshift-pipelines-operator.v0.9.1
+  # startingCSV: openshift-pipelines-operator.v0.10.4
   installPlanApproval: Automatic
-  # Name of the Package
+  # Name of the bundle package
   name: openshift-pipelines-operator
   source: community-operators
   # Namespace containing the sourcecatalog
