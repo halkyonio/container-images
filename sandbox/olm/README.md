@@ -47,7 +47,37 @@ upstream-community-operators   kong,jaeger,microcks,istio,twistlock,storageos,et
 
 ## Deploy the Operator using a subscription
 
-- Yo install the `Tekton` operator, a subscription is needed
+- Create an OperatorGroup to watch the operators to be deployed
+```bash
+kc apply -f operator-group.yml -n marketplace
+operatorgroup.operators.coreos.com/operatorsgroup created
+```
+
+- To install the `Tekton` operator, a subscription is needed
 ```bash
 kubectl apply -f tekton-subscription.yml
 ```
+
+- Verify the `Operator health`. So, Watch your Operator being deployed by OLM from the catalog source created by Operator Marketplace with the following command:
+```bash
+kubectl get clusterserviceversion -n marketplace
+NAME                                  DISPLAY                        VERSION   REPLACES   PHASE
+openshift-pipelines-operator.v0.8.2   OpenShift Pipelines Operator   0.8.2                Succeeded
+```
+
+
+## TO BE CHECKED
+
+so your catalogsource either needs to be in the same namespace as your subscription OR needs to be in the global catalog namespace (which subscriptions will resolve in any namespace)
+
+Charles Moulliard  2 minutes ago
+So, the subscription should be then created within the same namespace as the catalogsource ?
+
+Kevin Rizza  2 minutes ago
+yes
+
+Kevin Rizza  1 minute ago
+if you're using an operatorsource for updates then you can do that by creating a catalogsourceconfig with targetNamespace set to the namespace you want your subscription in
+
+Kevin Rizza  1 minute ago
+or you can just edit your olm deployment to use marketplace as the global namespace

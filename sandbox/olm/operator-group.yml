@@ -1,8 +1,5 @@
-apiVersion: operators.coreos.com/v1alpha2
+apiVersion: operators.coreos.com/v1
 kind: OperatorGroup
 metadata:
-  name: operatorsgroup
-  namespace: operators
-spec:
-  targetNamespaces:
-    - operators
+  name: marketplace-operators
+  namespace: marketplace
