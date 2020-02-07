@@ -1,4 +1,4 @@
-## Install OLM on k8s
+## Install to OLM on k8s
 
 Steps to follow to install OLM on kubernetes cluster
 https://github.com/operator-framework/community-operators/blob/master/docs/testing-operators.md#testing-operator-deployment-on-kubernetes
@@ -62,6 +62,8 @@ git clone https://github.com/operator-framework/operator-marketplace.git
 kubectl --validate=false apply -f operator-marketplace/deploy/upstream/
 ```
 
+## Verify the catalog
+
 - Check if the community catalog has been well deployed
 ```bash
 kc get OperatorSource -A
@@ -69,7 +71,7 @@ NAMESPACE     NAME                           TYPE          ENDPOINT             
 marketplace   upstream-community-operators   appregistry   https://quay.io/cnr   upstream-community-operators   Upstream Community Operators   Red Hat     Succeeded   The object has been successfully reconciled   8m10s
 ```
 
-- Veirfy if the `CatalogSource` is created in the marketplace namespace:
+- Verify if the `CatalogSource` is created in the marketplace namespace:
 ```bash
 kubectl get catalogsource -n marketplace
 NAME                           DISPLAY                        TYPE   PUBLISHER   AGE
