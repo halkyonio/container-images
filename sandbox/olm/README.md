@@ -1,13 +1,30 @@
-## Install to OLM on k8s
+# OLM on k8s
 
-Steps to follow to install OLM on kubernetes cluster
-https://github.com/operator-framework/community-operators/blob/master/docs/testing-operators.md#testing-operator-deployment-on-kubernetes
+The following document details the steps to follow to install the Operator Lifecycle Manager - `OLM` on a kubernetes cluster. 
+The `OLM` manages different CRDs: `ClusterServiceVersion`, `InstallPlan`, `Subscription` and `OperatorGroup` which are used
+to install an Operator using a subscription from a catalog.
 
-- ssh to the vm
-- Execute the following bash script to install the OLM operator
+The `CatalogSource` CRD allows to specify an external registry to poll the operators published on `quay.io` as a collection of packages/bundles.
+
+More information is available at this [address](https://github.com/operator-framework/community-operators/blob/master/docs/testing-operators.md#testing-operator-deployment-on-kubernetes)
+
+## Instructions
+
+- ssh to a vm running a Kubernetes cluster
+- Execute the following bash script to install the 2 operators managed by OLM: olm and catalog operator like also the different CRDs
 ```bash
 ./olm.sh 0.14.1
 ```
+
+# Install an additional catalog of operators
+
+It is possible to install additional `Catalog(s)` of `operators` if you deploy top of a cluster the `Operator-marketplace`. This operator allows to fetch from an external repository
+called an `operatorsource`, the metadata of the registry containing your operator packaged as a bundle or `upstream`, `community` or `certified operators.
+
+This operator manages 2 CRDs: the `OperatorSource` and `CatalogSourceConfig`. The `OperatorSource` defines the external datastore that we are using to store operator bundles.
+The `CatalogSourceConfig` is used to create an `OLM CatalogSource` consisting of operators from one `OperatorSource` so that these operators can then be managed by `OLM`.
+
+## Instructions
 
 - Install the `Operator Marketplace` and the `OperatorSource` containing the registry information of the community operators.
   **Note**: The upstream community operators are packaged on a quay.io registry as a collection of `bundles` containing the CRDs, package definition and ClusterServiceVersion.
