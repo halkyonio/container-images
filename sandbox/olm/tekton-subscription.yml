@@ -3,6 +3,7 @@ kind: Subscription
 metadata:
   name: tekton
   # !! the following namespace should be the same as where the catalogSource has been created
+  # as the catalog source is namespace scoped
   namespace: marketplace
 spec:
   channel: canary
