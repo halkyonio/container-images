@@ -2,9 +2,6 @@ apiVersion: operators.coreos.com/v1alpha1
 kind: Subscription
 metadata:
   name: tekton
-  # !! the following namespace should be the same as where the catalogSource has been created
-  # as the catalog source is namespace scoped
-  namespace: marketplace
 spec:
   channel: canary
   # startingCSV: openshift-pipelines-operator.v0.10.4

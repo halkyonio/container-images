@@ -16,10 +16,6 @@ More information is available at this [address](https://github.com/operator-fram
 ./olm.sh 0.14.1
 ```
 
-**REMARK**: Remove the `catalogSource` deployed by default as we will install the Openshift Operators catalog !!
-```bash
-kubectl delete catalogsource/operatorhubio-catalog -n olm
-```
 
 # Install additional catalogs of operators
 
@@ -85,7 +81,7 @@ operatorgroup.operators.coreos.com/operatorsgroup created
 
 - To install the `openshift-pipelines-operator` operator, create a subscription
 ```bash
-kubectl apply -f resources/tekton-subscription.yml
+kubectl apply -f resources/tekton-subscription.yml -n marketplace
 ```
 
 - Verify the `Operator health`. So, Watch your Operator being deployed by OLM from the catalog source created by Operator Marketplace with the following command:
@@ -93,18 +89,4 @@ kubectl apply -f resources/tekton-subscription.yml
 kubectl get csv -n marketplace
 NAME                                   DISPLAY                        VERSION   REPLACES   PHASE
 openshift-pipelines-operator.v0.10.4   OpenShift Pipelines Operator   0.10.4               Installing
-```
-
-## Using a different namespace to install the operators
-
-- Deploy the CatalogSourceConfig and Subscription
-```bash
-kubectl apply -f resources/catalogsourceconfig.yml
-kubectl apply -f resources/tekton-subscription.yml
-```
-- Check the CSV created
-```bash
-message: 'install strategy failed: Deployment.apps "openshift-pipelines-operator"
-      is invalid: spec.selector: Invalid value: v1.LabelSelector{MatchLabels:map[string]string{"name":"openshift-pipelines-operator"},
-      MatchExpressions:[]v1.LabelSelectorRequirement(nil)}: field is immutable'
 ```

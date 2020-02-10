@@ -12,10 +12,10 @@ fi
 
 release=$1
 url=https://github.com/operator-framework/operator-lifecycle-manager/releases/download/${release}
-namespace=olm
+namespace=marketplace
 
 kubectl apply --validate=false -f ${url}/crds.yaml
-kubectl apply -f ${url}/olm.yaml
+kubectl apply -f ./resources/olm.yml
 
 # wait for deployments to be ready
 kubectl rollout status -w deployment/olm-operator --namespace="${namespace}"
