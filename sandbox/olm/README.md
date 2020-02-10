@@ -16,7 +16,6 @@ More information is available at this [address](https://github.com/operator-fram
 ./olm.sh 0.14.1
 ```
 
-
 # Install additional catalogs of operators
 
 It is possible to install additional `Catalog(s)` of `operators` if you deploy top of a cluster the `Operator-marketplace`. This operator allows to fetch from an external repository
@@ -71,13 +70,6 @@ lightbend-console-operator          Community Operators   5m19s
 ```
 
 ## Deploy the Operator using a subscription
-
-- In order to install an operator, it is needed to have an `OperatorGroup` resource to define how to watch the operators to be deployed
-  cluster wise or namespace scoped
-```bash
-kubectl apply -f resources/operator-group.yml -n marketplace
-operatorgroup.operators.coreos.com/operatorsgroup created
-```
 
 - To install the `openshift-pipelines-operator` operator, create a subscription
 ```bash
