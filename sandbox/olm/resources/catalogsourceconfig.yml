@@ -1,0 +1,9 @@
+apiVersion: operators.coreos.com/v2
+kind: CatalogSourceConfig
+metadata:
+  name: openshift-pipelines-operator
+  namespace: marketplace
+spec:
+  targetNamespace: operators
+  source: community-operators
+  packages: openshift-pipelines-operator
