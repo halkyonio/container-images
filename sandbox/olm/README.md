@@ -10,11 +10,12 @@ More information is available at this [address](https://github.com/operator-fram
 
 ## Instructions
 
-- ssh to a vm running a Kubernetes cluster
-- Execute the following bash script to install the 2 operators managed by OLM: olm and catalog operator like also the different CRDs
+- Have access as `cluster-admin` to a k8s cluster
+- Execute the following bash script to install the 2 operators managed by the Operator Lifecycle Manager: olm and catalog operator like also the different CRDs
 ```bash
 ./olm.sh 0.14.1
 ```
+**REMARK**: The script will remove the image of the `catalogSource` deployed by default from `operatorhub` as we will install the `Openshift Operators catalog` !
 
 # Install additional catalogs of operators
 
@@ -24,7 +25,10 @@ called an `operatorsource`, the metadata of the registry containing your operato
 This operator manages 2 CRDs: the `OperatorSource` and `CatalogSourceConfig`. The `OperatorSource` defines the external datastore that we are using to store operator bundles.
 The `CatalogSourceConfig` is used to create an `OLM CatalogSource` consisting of operators from one `OperatorSource` so that these operators can then be managed by `OLM`.
 
-**Note**: The upstream community operators are packaged on a quay.io registry as a collection of `bundles` containing the CRDs, package definition and ClusterServiceVersion.
+**Note**: The upstream community operators are packaged on `quay.io` as a `application registry` containing a collection of `bundles` including the :
+- CRDs
+- Package definition and 
+- ClusterServiceVersion
   
 ## Instructions
 
@@ -39,7 +43,7 @@ kubectl apply -f https://raw.githubusercontent.com/operator-framework/operator-m
 kubectl apply -f https://raw.githubusercontent.com/operator-framework/operator-marketplace/master/deploy/upstream/08_operator.yaml
 ```
 
-- Deploy the `OperatorSource` which points to the quay registry containing the `Community Operators` or `Openshift Operators`
+- Deploy the `OperatorSource` which points to the quay registry containing the `Openshift Operators`
 ```bash
 kubectl apply -f https://raw.githubusercontent.com/operator-framework/operator-marketplace/master/deploy/examples/community.operatorsource.cr.yaml -n marketplace
 ```
@@ -69,16 +73,33 @@ lightbend-console-operator          Community Operators   5m19s
 ...
 ```
 
-## Deploy the Operator using a subscription
+## Deploy an OpenShift Operator using a subscription
 
-- To install the `openshift-pipelines-operator` operator, create a subscription
+- In order to install an operator, it is needed to have an `OperatorGroup` resource to define
+```bash
+kubectl apply -f resources/operator-group.yml -n marketplace
+```
+
+- To install the `openshift-pipelines-operator` operator, create a subscription and deploy it
 ```bash
 kubectl apply -f resources/tekton-subscription.yml -n marketplace
 ```
 
-- Verify the `Operator health`. So, Watch your Operator being deployed by OLM from the catalog source created by Operator Marketplace with the following command:
+- Check the status of the `ClusterServiceVersion` created using the following command:
 ```bash
 kubectl get csv -n marketplace
 NAME                                   DISPLAY                        VERSION   REPLACES   PHASE
 openshift-pipelines-operator.v0.10.4   OpenShift Pipelines Operator   0.10.4               Installing
+```
+
+## Without using the catalog
+
+The following process dont work !
+
+We can install a resource without the need to have a `CatalogSource` or `OperatorSource` if we have its `ClusterServiceVersion` yml resource. That will imply that of course
+the `Operator Lifecycle Manager` is installed like an operator group.
+
+```bash
+kubectl apply -f resources/operator-group.yml -n operators
+kubectl apply -f resources/halkyon-csv.yml -n operators
 ```

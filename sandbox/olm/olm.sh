@@ -12,10 +12,10 @@ fi
 
 release=$1
 url=https://github.com/operator-framework/operator-lifecycle-manager/releases/download/${release}
-namespace=marketplace
+namespace=olm
 
 kubectl apply --validate=false -f ${url}/crds.yaml
-kubectl apply -f ./resources/olm.yml
+kubectl apply -f ${url}/olm.yaml
 
 # wait for deployments to be ready
 kubectl rollout status -w deployment/olm-operator --namespace="${namespace}"
@@ -38,3 +38,4 @@ if [ $retries == 0 ]; then
 fi
 
 kubectl rollout status -w deployment/packageserver --namespace="${namespace}"
+kubectl delete catalogsource/operatorhubio-catalog --namespace="${namespace}"
