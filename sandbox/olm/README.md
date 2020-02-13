@@ -92,14 +92,31 @@ NAME                                   DISPLAY                        VERSION   
 openshift-pipelines-operator.v0.10.4   OpenShift Pipelines Operator   0.10.4               Installing
 ```
 
-## Without using the catalog
-
-The following process dont work !
-
-We can install a resource without the need to have a `CatalogSource` or `OperatorSource` if we have its `ClusterServiceVersion` yml resource. That will imply that of course
-the `Operator Lifecycle Manager` is installed like an operator group.
+## Using new operator registry
 
 ```bash
-kubectl apply -f resources/operator-group.yml -n operators
-kubectl apply -f resources/halkyon-csv.yml -n operators
+cd /Users/dabou/Code/github/operator-registry
+indexImage=quay.io/cmoulliard/olm-index:0.1.0
+bundleImage=quay.io/cmoulliard/olm-prometheus:0.22.2
+db=bin/local-registry.db
+
+./bin/opm alpha bundle build -t ${bundleImage} -p prometheus -c preview -e preview -d bin/manifests/prometheus/
+./bin/opm alpha bundle validate -t ${bundleImage} -b docker
+docker push  quay.io/cmoulliard/olm-prometheus:0.22.2
+
+
+./bin/opm index add -b ${bundleImage} -t ${indexImage} -c docker --permissive
+docker push quay.io/cmoulliard/olm-index:0.1.0
+
+
+./bin/opm registry add -b ${bundleImage} -d ${db} -c docker  --permissive
+./bin/opm registry serve -d ${db} -p 50052
+grpcurl -plaintext localhost:50052 list api.Registry
+grpcurl -plaintext localhost:50052 api.Registry/ListPackages
+{
+  "name": "prometheus"
+}
+
+
+./bin/opm index export --index=${indexImage} -o prometheus -c docker
 ```
