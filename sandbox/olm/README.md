@@ -94,6 +94,9 @@ openshift-pipelines-operator.v0.10.4   OpenShift Pipelines Operator   0.10.4    
 
 ## Using new operator registry
 
+More information about how to use the commands is available [here](https://github.com/operator-framework/operator-registry/tree/master/docs/design)
+
+- Steps to follow to create a bundle using the new Bundle format of an operator and publish it on quay
 ```bash
 cd /Users/dabou/Code/github/operator-registry
 indexImage=quay.io/cmoulliard/olm-index:0.1.0
@@ -103,20 +106,42 @@ db=bin/local-registry.db
 ./bin/opm alpha bundle build -t ${bundleImage} -p prometheus -c preview -e preview -d bin/manifests/prometheus/
 ./bin/opm alpha bundle validate -t ${bundleImage} -b docker
 docker push  quay.io/cmoulliard/olm-prometheus:0.22.2
+```
 
-
+- To add the bundle previsouly created to an index database
+```bash
 ./bin/opm index add -b ${bundleImage} -t ${indexImage} -c docker --permissive
 docker push quay.io/cmoulliard/olm-index:0.1.0
+```
 
-
+- To validate the bundle
+```bash
+./bin/opm alpha bundle validate -t ${bundleImage} -b docker
+```
+- To add the bundle to a local DB and exoport the content of the bundle
+```bash
 ./bin/opm registry add -b ${bundleImage} -d ${db} -c docker  --permissive
+./bin/opm index export --index=${indexImage} -o prometheus -c docker
+```
+
+- To play locally with the registry
+```bash
 ./bin/opm registry serve -d ${db} -p 50052
 grpcurl -plaintext localhost:50052 list api.Registry
 grpcurl -plaintext localhost:50052 api.Registry/ListPackages
 {
   "name": "prometheus"
 }
-
-
-./bin/opm index export --index=${indexImage} -o prometheus -c docker
+ grpcurl -plaintext -d '{"name":"prometheus"}' localhost:50052 api.Registry/GetPackage
+{
+  "name": "prometheus",
+  "channels": [
+    {
+      "name": "preview",
+      "csvName": "prometheusoperator.0.32.0"
+    }
+  ],
+  "defaultChannelName": "preview"
+}
+grpcurl -plaintext -d '{"pkgName":"prometheus","channelName":"preview"}' localhost:50052 api.Registry/GetBundleForChannel > result.json
 ```
