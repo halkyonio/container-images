@@ -26,12 +26,18 @@ kc apply -n demo -f resources/prometheus/04-ingress.yml
 
 - Create a Prometheus instance, ingress route and finally deploy the `ServiceMonitor` monitoring our Spring Boot application
 ```bash
+kc apply -n demo -f resources/prometheus/08-prometheus-sa.yml
+kc apply -n demo -f resources/prometheus/09-prometheus-clusterrole.yml
+kc apply -n demo -f resources/prometheus/10-prometheus-clusterrolebinding.yml
 kc apply -n demo -f resources/prometheus/05-prometheus.yml
 kc apply -n demo -f resources/prometheus/07-prometheus-ingress.yml
 kc apply -n demo -f resources/prometheus/03-servicemonitor.yml
 ```
 - To clean the resources
 ```bash
+kc delete -n demo -f resources/prometheus/08-prometheus-sa.yml
+kc delete -n demo -f resources/prometheus/09-prometheus-clusterrole.yml
+kc delete -n demo -f resources/prometheus/10-prometheus-clusterrolebinding.yml
 kc delete -n demo -f resources/prometheus/05-prometheus.yml
 kc delete -n demo -f resources/prometheus/07-prometheus-ingress.yml
 kc delete -n demo -f resources/prometheus/03-servicemonitor.yml
