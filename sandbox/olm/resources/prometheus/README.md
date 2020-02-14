@@ -6,7 +6,7 @@ kc -n demo apply -f resources/prometheus/single-operatorgroup.yml
 kc -n demo apply -f resources/prometheus/subscription.yml
 ```
 
-- Git clone the dekorate project and build the example of Spring Boot Prometheus
+- Git clone the `dekorate` project and build the example of Spring Boot Prometheus
 ```bash
 git clone https://github.com/dekorateio/dekorate.git & cd dekorate/examples/spring-boot-with-prometheus-on-kubernetes-example
 mvn clean install
