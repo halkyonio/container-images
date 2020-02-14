@@ -24,12 +24,9 @@ kc apply -n demo -f resources/prometheus/02-svc.yml
 kc apply -n demo -f resources/prometheus/04-ingress.yml
 ```
 
-- Create a Prometheus instance and `ServiceMonitor`
+- Create a Prometheus instance, ingress route and finally deploy the `ServiceMonitor` monitoring our Spring Boot application
 ```bash
 kc apply -n demo -f resources/prometheus/05-prometheus.yml
-#kc apply -n demo -f resources/prometheus/06-prometheus-svc.yml
 kc apply -n demo -f resources/prometheus/07-prometheus-ingress.yml
 kc apply -n demo -f resources/prometheus/03-servicemonitor.yml
 ```
-
-03-servicemonitor.yml
