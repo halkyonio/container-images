@@ -38,4 +38,4 @@ if [ $retries == 0 ]; then
 fi
 
 kubectl rollout status -w deployment/packageserver --namespace="${namespace}"
-kubectl delete catalogsource/operatorhubio-catalog --namespace="${namespace}"
+# kubectl delete catalogsource/operatorhubio-catalog --namespace="${namespace}"
