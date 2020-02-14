@@ -19,26 +19,25 @@ docker push cmoulliard/spring-boot-prometheus
 
 - Deploy the Spring Boot Prometheus application on the cluster, its service and ingress route
 ```bash
-kc apply -n demo -f resources/prometheus/01-dep.yml
-kc apply -n demo -f resources/prometheus/02-svc.yml
-kc apply -n demo -f resources/prometheus/04-ingress.yml
+kc apply -n demo -f resources/prometheus/application/01-dep.yml
+kc apply -n demo -f resources/prometheus/application/02-svc.yml
+kc apply -n demo -f resources/prometheus/application/03-ingress.yml
 ```
 
-- Create a Prometheus instance, ingress route and finally deploy the `ServiceMonitor` monitoring our Spring Boot application
+- Create a Prometheus instance, service account, clusterrole, clusterrolebinding, ingress route
 ```bash
-kc apply -n demo -f resources/prometheus/08-prometheus-sa.yml
-kc apply -n demo -f resources/prometheus/09-prometheus-clusterrole.yml
-kc apply -n demo -f resources/prometheus/10-prometheus-clusterrolebinding.yml
-kc apply -n demo -f resources/prometheus/05-prometheus.yml
-kc apply -n demo -f resources/prometheus/07-prometheus-ingress.yml
-kc apply -n demo -f resources/prometheus/03-servicemonitor.yml
+kc apply -n demo -f resources/prometheus/server
 ```
+
+- And finally deploy the `ServiceMonitor` monitoring our Spring Boot application
+```bash
+kc apply -n demo -f resources/prometheus/application/04-servicemonitor.yml
+```
+
+- Open your browser at the following address and watch the resources: http://prometheus.88.99.186.195.nip.io/graph
+
 - To clean the resources
 ```bash
-kc delete -n demo -f resources/prometheus/08-prometheus-sa.yml
-kc delete -n demo -f resources/prometheus/09-prometheus-clusterrole.yml
-kc delete -n demo -f resources/prometheus/10-prometheus-clusterrolebinding.yml
-kc delete -n demo -f resources/prometheus/05-prometheus.yml
-kc delete -n demo -f resources/prometheus/07-prometheus-ingress.yml
-kc delete -n demo -f resources/prometheus/03-servicemonitor.yml
+kc delete -n demo -f resources/prometheus/application
+kc delete -n demo -f resources/prometheus/server
 ```
