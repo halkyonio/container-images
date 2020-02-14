@@ -27,7 +27,7 @@ kc apply -n demo -f resources/prometheus/04-ingress.yml
 - Create a Prometheus instance and `ServiceMonitor`
 ```bash
 kc apply -n demo -f resources/prometheus/05-prometheus.yml
-kc apply -n demo -f resources/prometheus/06-prometheus-svc.yml
+#kc apply -n demo -f resources/prometheus/06-prometheus-svc.yml
 kc apply -n demo -f resources/prometheus/07-prometheus-ingress.yml
 kc apply -n demo -f resources/prometheus/03-servicemonitor.yml
 ```
