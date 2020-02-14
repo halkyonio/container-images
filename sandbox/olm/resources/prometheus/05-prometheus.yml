@@ -5,6 +5,7 @@ metadata:
     prometheus: k8s
   name: k8s
 spec:
+  externalUrl: http://prometheus.88.99.186.195.nip.io/prometheus
   alerting:
     alertmanagers:
       - name: alertmanager-main
