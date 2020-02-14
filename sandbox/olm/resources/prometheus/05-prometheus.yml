@@ -9,5 +9,5 @@ spec:
   alerting:
     alertmanagers:
       - name: alertmanager-main
-        namespace: monitoring
+        namespace: demo
         port: web
