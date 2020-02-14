@@ -30,3 +30,9 @@ kc apply -n demo -f resources/prometheus/05-prometheus.yml
 kc apply -n demo -f resources/prometheus/07-prometheus-ingress.yml
 kc apply -n demo -f resources/prometheus/03-servicemonitor.yml
 ```
+- To clean the resources
+```bash
+kc delete -n demo -f resources/prometheus/05-prometheus.yml
+kc delete -n demo -f resources/prometheus/07-prometheus-ingress.yml
+kc delete -n demo -f resources/prometheus/03-servicemonitor.yml
+```

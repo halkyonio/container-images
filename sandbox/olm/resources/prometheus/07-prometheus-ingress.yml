@@ -13,8 +13,4 @@ spec:
           - backend:
               serviceName: prometheus-operated
               servicePort: 9090
-            path: /prometheus
-          - backend:
-              serviceName: alertmanager-main
-              servicePort: 9093
-            path: /alertmanager
+            path: /
