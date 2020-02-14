@@ -6,6 +6,9 @@ metadata:
   name: k8s
 spec:
   externalUrl: http://prometheus.88.99.186.195.nip.io
+  serviceMonitorSelector:
+    matchLabels:
+      app: spring-boot-monitoring
   alerting:
     alertmanagers:
       - name: alertmanager-main
