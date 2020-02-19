@@ -4,6 +4,8 @@ autostart = {{.AutoStart}}
 stdout_logfile = /dev/stdout
 stderr_logfile = /dev/stdout
 stdout_events_enabled = true
+stopsignal = TERM
+stopwaitsecs = 5
 
 {{end}}{{end}}[inet_http_server]
 port=localhost:9001
